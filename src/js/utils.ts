@@ -17,3 +17,20 @@ export const nextDayNumber = (val: number): number => {
   const dt = new Date(y, m - 1, d);
   return timestamp2number(dt.getTime());
 };
+
+export class CacheTool<T> {
+  cachedData: Map<string, T> = null;
+
+  constructor() {
+    this.cachedData = new Map<string, T>();
+  }
+
+  async Get(key: string, fallBack: () => Promise<T>): Promise<T> {
+    if (this.cachedData.has(key)) {
+      return this.cachedData.get(key);
+    }
+    const result = await fallBack();
+    this.cachedData.set(key, result);
+    return result;
+  }
+}
