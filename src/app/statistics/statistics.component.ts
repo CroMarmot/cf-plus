@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import CroMarmotData from './user';
 import {Date2GR, YearData} from '../../model/models';
 import {intDiv, nextDayNumber, timestamp2number} from '../../js/utils';
-import {StatisticsService} from './statistics.service';
+import {CodeforcesApiService} from '../../services/codeforces-api.service';
 
 @Component({
   selector: 'app-statistics',
@@ -15,10 +14,8 @@ export class StatisticsComponent implements OnInit {
   public errorReason = '';
   public searching = false;
   public greenRed: YearData[] = [];
-  private statisticsService: StatisticsService;
 
-  constructor(statisticsService: StatisticsService) {
-    this.statisticsService = statisticsService;
+  constructor(private codeforcesApiService: CodeforcesApiService) {
   }
 
   ngOnInit(): void {
@@ -27,17 +24,8 @@ export class StatisticsComponent implements OnInit {
 
   async getData(): Promise<void> {
     this.searching = true;
-    // const url = 'https://codeforces.com/api/user.status?handle=' + this.userName
-    // fetch(url)
-    //   .then(r => r.json())
-
-    //   .then((value) => {
-    const value = CroMarmotData;
-    this.userData = value.result;
-    this.userData = (await this.statisticsService.getUserData(this.userName)).result;
-
+    this.userData = (await this.codeforcesApiService.getUserStatus(this.userName)).result;
     this.searching = false;
-
     // }).catch((reason) => {
     //   this.searching = false
     //   this.errorReason = `未找到结果(${reason})`

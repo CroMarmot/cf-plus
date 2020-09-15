@@ -1,3 +1,5 @@
+import {CfUserRatingItem} from './CfUserRatingItem';
+
 export class UserStatusResp {
   status: string;
   result: {
@@ -28,4 +30,9 @@ export class UserStatusResp {
     timeConsumedMillis: number,
     memoryConsumedBytes: number
   }[];
+}
+
+export class UserRatingResp {
+  status: string;
+  result: CfUserRatingItem[];
 }

@@ -1,0 +1,24 @@
+<mat-tab-group class="tab-group">
+  <mat-tab label="Cro-Marmot">
+    <app-rating-graph [userRatingList]="CroMarmotRatingList"></app-rating-graph>
+    <app-user-rating [userRatingList]="CroMarmotRatingList"></app-user-rating>
+  </mat-tab>
+  <mat-tab label="YeXiaoRain">
+    <app-rating-graph [userRatingList]="YeXiaoRainRatingList"></app-rating-graph>
+    <app-user-rating [userRatingList]="YeXiaoRainRatingList"></app-user-rating>
+  </mat-tab>
+  <mat-tab label="Allen_3">
+    <app-rating-graph [userRatingList]="Allen3RatingList"></app-rating-graph>
+    <app-user-rating [userRatingList]="Allen3RatingList"></app-user-rating>
+  </mat-tab>
+  <mat-tab label="Custom">
+    <mat-card>
+      <mat-form-field>
+        <input matInput placeholder="Profile" [(ngModel)]="customName">
+      </mat-form-field>
+      <button mat-stroked-button (click)="queryCustom()">query</button>
+    </mat-card>
+    <app-rating-graph [userRatingList]="CustomRatingList"></app-rating-graph>
+    <app-user-rating [userRatingList]="CustomRatingList"></app-user-rating>
+  </mat-tab>
+</mat-tab-group>

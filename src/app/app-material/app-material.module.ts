@@ -8,6 +8,10 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatCardModule} from '@angular/material/card';
+import {MatTableModule} from '@angular/material/table';
 
 const mm = [
   MatInputModule,
@@ -18,6 +22,10 @@ const mm = [
   MatOptionModule,
   MatSelectModule,
   MatSidenavModule,
+  MatTabsModule,
+  MatPaginatorModule,
+  MatCardModule,
+  MatTableModule
 ];
 
 @NgModule({
