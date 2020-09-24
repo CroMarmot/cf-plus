@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1600950217824,
+  "timestamp": 1600962633227,
   "index": "/cf-plus/index.html",
   "assetGroups": [
     {
@@ -15,7 +15,7 @@
         "/cf-plus/5.0b7c697f004df4c464b7.js",
         "/cf-plus/favicon.ico",
         "/cf-plus/index.html",
-        "/cf-plus/main.1aad17ab401cbb6cbaf7.js",
+        "/cf-plus/main.b740d994e19aad4309c7.js",
         "/cf-plus/manifest.webmanifest",
         "/cf-plus/polyfills.2b9efda34b919da8fe8a.js",
         "/cf-plus/runtime.ebc9b2ac75e5b8e40eb5.js",
@@ -56,8 +56,8 @@
     "/cf-plus/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
     "/cf-plus/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
     "/cf-plus/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/cf-plus/index.html": "73cbad4fc53b07eaf277578a74b013b518b5ff90",
-    "/cf-plus/main.1aad17ab401cbb6cbaf7.js": "8b1a7b5f576b1980da55e01e33d4aa805f200462",
+    "/cf-plus/index.html": "da85c4787c12ed09411d6ede4732543f7a8fb4c3",
+    "/cf-plus/main.b740d994e19aad4309c7.js": "c3398369ca01776e3c18fbb4c8251f957857e575",
     "/cf-plus/manifest.webmanifest": "094ed1123bd83cc7d0344da7e54d6782bbbe9ec6",
     "/cf-plus/polyfills.2b9efda34b919da8fe8a.js": "9db3f1bf5afbecb31233abc0b143858b395cc9e9",
     "/cf-plus/runtime.ebc9b2ac75e5b8e40eb5.js": "024cd8f759f8cba3af1b200be49df18881ff26fa",
