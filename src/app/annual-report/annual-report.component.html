@@ -6,11 +6,10 @@
   </button>
 </mat-form-field>
 <button mat-raised-button (click)="getData()">Search</button>
-<div *ngIf="result.length > 0">
-  <app-verdicts-stat [userStatusResult]="result"></app-verdicts-stat>
-  <app-language-stat [userStatusResult]="result"></app-language-stat>
-  <app-tags-stat [userStatusResult]="result"></app-tags-stat>
-  <app-level-stat [userStatusResult]="result"></app-level-stat>
-  <app-rating-stat [userStatusResult]="result"></app-rating-stat>
-  <app-stat-table [userStatusResult]="result"></app-stat-table>
-</div>
+
+<app-verdicts-stat [userStatusResult]="result"></app-verdicts-stat>
+<app-language-stat [userStatusResult]="result"></app-language-stat>
+<app-tags-stat [userStatusResult]="result"></app-tags-stat>
+<app-level-stat [userStatusResult]="result"></app-level-stat>
+<app-rating-stat [userStatusResult]="result"></app-rating-stat>
+<app-stat-table [userStatusResult]="result"></app-stat-table>
