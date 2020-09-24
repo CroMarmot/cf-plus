@@ -12,6 +12,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
+import {MatChipsModule} from '@angular/material/chips';
 
 const mm = [
   MatInputModule,
@@ -25,7 +26,8 @@ const mm = [
   MatTabsModule,
   MatPaginatorModule,
   MatCardModule,
-  MatTableModule
+  MatTableModule,
+  MatChipsModule
 ];
 
 @NgModule({

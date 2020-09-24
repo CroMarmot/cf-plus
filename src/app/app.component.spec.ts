@@ -6,10 +6,10 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
       ],
       declarations: [
-        AppComponent
+        AppComponent,
       ],
     }).compileComponents();
   });
@@ -26,10 +26,10 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('cf-plus');
   });
 
-  it('should render title', () => {
+  it('should render Codeforces+', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('cf-plus app is running!');
+    expect(compiled.querySelector('.page-container').textContent).toContain('Codeforces +');
   });
 });

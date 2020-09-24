@@ -43,6 +43,9 @@
         ]
       }
     ],
+    "no-any": [
+      true
+    ],
     "no-console": [
       true,
       "debug",

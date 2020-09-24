@@ -1,1 +1,16 @@
-<p>annual-report works!</p>
+<mat-form-field class="example-full-width">
+  <mat-label>Handle</mat-label>
+  <input matInput placeholder="Ex. Cro-Marmot" [(ngModel)]="userName"/>
+  <button mat-button *ngIf="userName" matSuffix mat-icon-button aria-label="Clear" (click)="userName=''">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>
+<button mat-raised-button (click)="getData()">Search</button>
+<div *ngIf="result.length > 0">
+  <app-verdicts-stat [userStatusResult]="result"></app-verdicts-stat>
+  <app-language-stat [userStatusResult]="result"></app-language-stat>
+  <app-tags-stat [userStatusResult]="result"></app-tags-stat>
+  <app-level-stat [userStatusResult]="result"></app-level-stat>
+  <app-rating-stat [userStatusResult]="result"></app-rating-stat>
+  <app-stat-table [userStatusResult]="result"></app-stat-table>
+</div>

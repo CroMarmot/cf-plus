@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {UserRatingResp, UserStatusResp} from '../model/response';
 import {CacheTool} from '../js/utils';
-
+// import UserStatus from './user.status.js';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,7 @@ export class CodeforcesApiService {
   }
 
   getUserStatus(userName: string): Promise<UserStatusResp> {
+    // return Promise.resolve(UserStatus);
     return this.userStatusCache.Get(userName, () =>
       fetch(`https://codeforces.com/api/user.status?handle=${userName}`).then(res => res.json())
     );

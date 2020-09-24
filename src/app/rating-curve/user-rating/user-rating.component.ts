@@ -26,7 +26,7 @@ export class UserRatingComponent implements OnInit {
   private userRatingListPrivate: CfUserRatingItem[] = [];
 
   @Input() set userRatingList(value: CfUserRatingItem[]) {
-    console.log('userRatingList' + value.length);
+    // console.log('userRatingList' + value.length);
     this.userRatingListPrivate = value;
     this.dataSource$ = new MatTableDataSource(value);
     this.dataSource$.paginator = this.paginator;

@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CodeforcesStaticService } from '../../../services/codeforces-static.service';
 import { EChartOption } from 'echarts';
 import { CfUserRatingItem } from '../../../model/CfUserRatingItem';
-import {CodeforcesApiService} from '../../../services/codeforces-api.service';
 
 const COLORS = CodeforcesStaticService.getColors();
 
