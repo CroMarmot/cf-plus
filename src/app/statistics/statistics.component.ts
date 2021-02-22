@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Date2GR, YearData} from '../../model/models';
 import {intDiv, nextDayNumber, timestamp2number} from '../../js/utils';
 import {CodeforcesApiService} from '../../services/codeforces-api.service';
+import {UserStatus} from '../../model/response';
 
 @Component({
   selector: 'app-statistics',
@@ -9,11 +10,11 @@ import {CodeforcesApiService} from '../../services/codeforces-api.service';
   styleUrls: ['./statistics.component.less']
 })
 export class StatisticsComponent implements OnInit {
-  public userName = 'Cro-Marmot';
-  private userData = [];
-  public errorReason = '';
-  public searching = false;
-  public greenRed: YearData[] = [];
+  userName = 'Cro-Marmot';
+  userData: UserStatus[] = [];
+  errorReason = '';
+  searching = false;
+  greenRed: YearData[] = [];
 
   constructor(private codeforcesApiService: CodeforcesApiService) {
   }
@@ -40,11 +41,12 @@ export class StatisticsComponent implements OnInit {
     }
     const todayDate = timestamp2number(new Date().getTime()); // TODO
     let minDate = todayDate;
+    console.log(this.userData[0]);
     this.userData.forEach((raw) => {
-      if (typeof raw.author.startTimeSeconds === 'undefined') {
+      if (typeof raw.creationTimeSeconds === 'undefined') {
         return;
       }
-      const key = timestamp2number(raw.author.startTimeSeconds * 1000);
+      const key = timestamp2number(raw.creationTimeSeconds * 1000);
       const record = d2ggMap.has(key) ? d2ggMap.get(key) : (new Date2GR(key));
       d2ggMap.set(key, record.addResult(raw.verdict));
       minDate = Math.min(minDate, key);

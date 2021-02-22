@@ -1,5 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {EChartOption} from 'echarts';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {EChartOption, ECharts} from 'echarts';
+import {combineLatest, Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 interface VerdictMap {
   verdict: string;
@@ -10,7 +12,14 @@ interface VerdictMap {
   templateUrl: './verdicts-stat.component.html',
   styleUrls: ['./verdicts-stat.component.less']
 })
-export class VerdictsStatComponent implements OnInit {
+export class VerdictsStatComponent implements OnInit, OnDestroy {
+
+  // track the page life
+  private destroyed$ = new Subject<void>();
+
+  userStatus$ = new Subject<VerdictMap[]>();
+  eChartInstance$ = new Subject<ECharts>();
+
   chartOption: EChartOption = {
     title: {
       text: 'Verdicts',
@@ -46,30 +55,33 @@ export class VerdictsStatComponent implements OnInit {
     ]
   };
 
-  private echartsInstance = null;
-  private newChartOption: EChartOption = null;
-
   @Input() set userStatusResult(result: VerdictMap[]) {
-    this.updateVerdictGraph(result);
+    if (typeof result !== 'undefined') {
+      this.userStatus$.next(result);
+    }
   }
 
   constructor() {
   }
 
   ngOnInit(): void {
+    combineLatest([this.userStatus$, this.eChartInstance$])
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(([result, eChartIns]) => {
+        this.updateVerdictGraph(result, eChartIns);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   onChartInit(ec): void {
-    if (this.echartsInstance === null) {
-      this.echartsInstance = ec;
-      if (this.newChartOption !== null) {
-        this.echartsInstance.setOption(this.newChartOption);
-        this.newChartOption = null;
-      }
-    }
+    this.eChartInstance$.next(ec);
   }
 
-  updateVerdictGraph(result: VerdictMap[]): void {
+  updateVerdictGraph(result: VerdictMap[], eChartIns: ECharts): void {
     if (result.length === 0) {
       return;
     }
@@ -89,11 +101,6 @@ export class VerdictsStatComponent implements OnInit {
     (chartOption.legend as EChartOption.Legend).data = verdictsDataList.map(v => v.name);
     (chartOption.series as EChartOption.SeriesPie)[0].data = verdictsDataList;
 
-    // TODO fix echartsInstance 加载时间晚的问题 Observable?
-    if (this.echartsInstance !== null) {
-      this.echartsInstance.setOption(chartOption);
-    } else {
-      this.newChartOption = chartOption;
-    }
+    eChartIns.setOption(chartOption);
   }
 }

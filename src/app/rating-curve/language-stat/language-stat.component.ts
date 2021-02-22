@@ -1,5 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {EChartOption} from 'echarts';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {EChartOption, ECharts} from 'echarts';
+import {combineLatest, Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 interface LanguageMap {
   programmingLanguage: string;
@@ -10,7 +12,13 @@ interface LanguageMap {
   templateUrl: './language-stat.component.html',
   styleUrls: ['./language-stat.component.less']
 })
-export class LanguageStatComponent implements OnInit {
+export class LanguageStatComponent implements OnInit, OnDestroy {
+  // track the page life
+  private destroyed$ = new Subject<void>();
+
+  userStatus$ = new Subject<LanguageMap[]>();
+  eChartInstance$ = new Subject<ECharts>();
+
   chartOption: EChartOption = {
     title: {
       text: 'Languages',
@@ -46,30 +54,33 @@ export class LanguageStatComponent implements OnInit {
     ]
   };
 
-  private echartsInstance = null;
-  private newChartOption: EChartOption = null;
-
   @Input() set userStatusResult(result: LanguageMap[]) {
-    this.updateLanguageGraph(result);
+    if (typeof result !== 'undefined') {
+      this.userStatus$.next(result);
+    }
   }
 
   constructor() {
   }
 
   ngOnInit(): void {
+    combineLatest([this.userStatus$, this.eChartInstance$])
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(([result, eChartIns]) => {
+        this.updateLanguageGraph(result, eChartIns);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   onChartInit(ec): void {
-    if (this.echartsInstance === null) {
-      this.echartsInstance = ec;
-      if (this.newChartOption !== null) {
-        this.echartsInstance.setOption(this.newChartOption);
-        this.newChartOption = null;
-      }
-    }
+    this.eChartInstance$.next(ec);
   }
 
-  updateLanguageGraph(result: LanguageMap[]): void {
+  updateLanguageGraph(result: LanguageMap[], eChartIns: ECharts): void {
     if (result.length === 0) {
       return;
     }
@@ -89,12 +100,7 @@ export class LanguageStatComponent implements OnInit {
     (chartOption.legend as EChartOption.Legend).data = languagesDataList.map(v => v.name);
     (chartOption.series as EChartOption.SeriesPie)[0].data = languagesDataList;
 
-    // TODO fix echartsInstance 加载时间晚的问题 Observable?
-    if (this.echartsInstance !== null) {
-      this.echartsInstance.setOption(chartOption);
-    } else {
-      this.newChartOption = chartOption;
-    }
+    eChartIns.setOption(chartOption);
   }
 
 }

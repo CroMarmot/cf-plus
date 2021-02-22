@@ -19,7 +19,9 @@ export class StatTableComponent implements OnInit, OnDestroy {
   userStatusMapArrOb$ = new Subject<UserStatus[]>();
 
   @Input() set userStatusResult(result: UserStatus[]) {
-    this.userStatusMapArrOb$.next(result);
+    if (typeof result !== 'undefined') {
+      this.userStatusMapArrOb$.next(result);
+    }
   }
 
   constructor() {
@@ -39,6 +41,7 @@ export class StatTableComponent implements OnInit, OnDestroy {
   }
 
   updateVerdictGraph(result: UserStatus[]): void {
+
     if (result.length === 0) {
       return;
     }
@@ -89,20 +92,13 @@ export class StatTableComponent implements OnInit, OnDestroy {
     }
     solvedDataList.sort((v0, v1) => v1.value - v0.value);
 
-
-    // Tried	784
-    // Solved	759
-    // Average attempts	2.11
-    // Max attempts	63 (884-E)
-    // Solved with one submission	522 (68.77%)
-    // Max AC(s)	5 (877-E)
     // Number of contests	101
     // Best rank	23 (1155)
     // Worst rank	6359 (1316)
     // Max up	1423 (839)
     // Max down	-173 (1316)
 
-    console.log('data source:', this.dataSource);
+    // console.log('data source:', this.dataSource);
 
     let tried = 0; // count of distinct problems
     let solved = 0;

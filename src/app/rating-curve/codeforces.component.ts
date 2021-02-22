@@ -1,6 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {CfUserRatingItem} from '../../model/CfUserRatingItem';
 import {CodeforcesApiService} from '../../services/codeforces-api.service';
+import {UserStatus} from '../../model/response';
+
+interface DisplayData {
+  label: string;
+  userRating: CfUserRatingItem[];
+  userStatus: UserStatus[];
+}
 
 @Component({
   selector: 'app-codeforces',
@@ -8,34 +15,41 @@ import {CodeforcesApiService} from '../../services/codeforces-api.service';
   styleUrls: ['./codeforces.component.less'],
 })
 export class CodeforcesComponent implements OnInit {
-  CroMarmotRatingList: CfUserRatingItem[] = [];
-  YeXiaoRainRatingList: CfUserRatingItem[] = [];
-  Allen3RatingList: CfUserRatingItem[] = [];
-  CustomRatingList: CfUserRatingItem[] = [];
+  customLists: DisplayData = {label: 'Custom', userRating: [], userStatus: []};
+
+  defaultLists: DisplayData[] = [];
 
   customName = '';
 
-  constructor(private cfapi: CodeforcesApiService) {
+  constructor(private codeforcesApiService: CodeforcesApiService) {
   }
 
   ngOnInit(): void {
-    this.cfapi.getUserRating('Cro-Marmot').then((ret) => {
-      this.CroMarmotRatingList = ret.result;
-    });
-    this.cfapi.getUserRating('YeXiaoRain').then((ret) => {
-      this.YeXiaoRainRatingList = ret.result;
-    });
-    this.cfapi.getUserRating('Allen_3').then((ret) => {
-      this.Allen3RatingList = ret.result;
+    const defaultUsers: string[] = ['Cro-Marmot']; // HTTP 429 , 'YeXiaoRain', 'Allen_3'];
+    this.defaultLists = defaultUsers.map(label => ({
+      label,
+      userRating: [],
+      userStatus: [],
+    }));
+    defaultUsers.forEach((label, index) => {
+      this.codeforcesApiService.getUserRating(label).then((ret) => {
+        this.defaultLists[index].userRating = ret.result;
+      });
+      this.codeforcesApiService.getUserStatus(label).then((ret) => {
+        this.defaultLists[index].userStatus = ret.result;
+      });
     });
   }
 
-  queryCustom(): void{
+  queryCustom(): void {
     if (this.customName === '') {
       return;
     }
-    this.cfapi.getUserRating(this.customName).then((ret) => {
-      this.CustomRatingList = ret.result;
+    this.codeforcesApiService.getUserRating(this.customName).then((ret) => {
+      this.customLists.userRating = ret.result;
+    });
+    this.codeforcesApiService.getUserStatus(this.customName).then((ret) => {
+      this.customLists.userStatus = ret.result;
     });
   }
 }

@@ -61,7 +61,9 @@ export class TagsStatComponent implements OnInit, OnDestroy {
 
 
   @Input() set userStatusResult(result: TagsMap[]) {
-    this.tagsMapArrOb$.next(result);
+    if (typeof result !== 'undefined') {
+      this.tagsMapArrOb$.next(result);
+    }
   }
 
   constructor() {

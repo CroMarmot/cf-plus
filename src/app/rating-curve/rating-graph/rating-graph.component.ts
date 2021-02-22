@@ -1,7 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { CodeforcesStaticService } from '../../../services/codeforces-static.service';
-import { EChartOption } from 'echarts';
-import { CfUserRatingItem } from '../../../model/CfUserRatingItem';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {CodeforcesStaticService} from '../../../services/codeforces-static.service';
+import {EChartOption, ECharts} from 'echarts';
+import {CfUserRatingItem} from '../../../model/CfUserRatingItem';
+import {combineLatest, Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 const COLORS = CodeforcesStaticService.getColors();
 
@@ -10,7 +12,13 @@ const COLORS = CodeforcesStaticService.getColors();
   templateUrl: './rating-graph.component.html',
   styleUrls: ['./rating-graph.component.less'],
 })
-export class RatingGraphComponent implements OnInit {
+export class RatingGraphComponent implements OnInit, OnDestroy {
+  // track the page life
+  private destroyed$ = new Subject<void>();
+
+  ratingGraphResult$ = new Subject<CfUserRatingItem[]>();
+  eChartInstance$ = new Subject<ECharts>();
+
   chartOption: EChartOption = {
     tooltip: {
       trigger: 'axis',
@@ -34,21 +42,15 @@ export class RatingGraphComponent implements OnInit {
     ],
   };
 
-  private echartsInstance = null;
-  private newChartOption: EChartOption = null;
-
-  private userRatingListPrivate: CfUserRatingItem[];
 
   @Input() set userRatingList(value: CfUserRatingItem[]) {
-    this.userRatingListPrivate = value;
-    this.updateRatingGraph(this.userRatingListPrivate);
+    if (typeof value !== 'undefined') {
+      this.ratingGraphResult$.next(value);
+    }
   }
 
-  get userRatingList(): CfUserRatingItem[] {
-    return this.userRatingListPrivate;
+  constructor() {
   }
-
-  constructor() {}
 
   ngOnInit(): void {
     const vMap = {
@@ -64,40 +66,40 @@ export class RatingGraphComponent implements OnInit {
       });
     });
     this.chartOption.visualMap = [vMap];
+
+    combineLatest([this.ratingGraphResult$, this.eChartInstance$])
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(([result, eChartIns]) => {
+        this.updateRatingGraph(result, eChartIns);
+      });
   }
 
-  onChartInit(ec): void{
-    if (this.echartsInstance === null) {
-      this.echartsInstance = ec;
-      if (this.newChartOption !== null) {
-        this.echartsInstance.setOption(this.newChartOption);
-        this.newChartOption = null;
-      }
-    }
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
-  updateRatingGraph(data: CfUserRatingItem[]): void{
-    if (data.length === 0) {
+  onChartInit(eChartsIns): void {
+    this.eChartInstance$.next(eChartsIns);
+  }
+
+  updateRatingGraph(result: CfUserRatingItem[], eChartsIns: ECharts): void {
+    if (result.length === 0) {
       return;
     }
     const chartOption: EChartOption = this.chartOption;
     const xAxisData = [];
-    for (let i = 0; i < data.length; i++) {
-      xAxisData.push(i);
-    }
+    result.forEach((value, index) => {
+      return xAxisData.push(index);
+    });
     (chartOption.xAxis as EChartOption.XAxis).data = xAxisData;
 
     const seriesData: number[] = [];
-    data.forEach((v) => {
+    result.forEach((v) => {
       seriesData.push(v.newRating);
     });
     (chartOption.series as EChartOption.SeriesLines)[0].data = seriesData;
 
-    // TODO fix echartsInstance 加载时间晚的问题 Observable?
-    if (this.echartsInstance !== null) {
-      this.echartsInstance.setOption(chartOption);
-    } else {
-      this.newChartOption = chartOption;
-    }
+    eChartsIns.setOption(chartOption);
   }
 }

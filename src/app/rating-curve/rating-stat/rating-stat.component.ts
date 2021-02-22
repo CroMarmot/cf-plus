@@ -69,7 +69,9 @@ export class RatingStatComponent implements OnInit, OnDestroy {
 
 
   @Input() set userStatusResult(result: RatingMap[]) {
-    this.levelsMapArrOb$.next(result);
+    if (typeof result !== 'undefined') {
+      this.levelsMapArrOb$.next(result);
+    }
   }
 
   constructor() {

@@ -67,7 +67,9 @@ export class LevelStatComponent implements OnInit, OnDestroy {
 
 
   @Input() set userStatusResult(result: LevelsMap[]) {
-    this.levelsMapArrOb$.next(result);
+    if (typeof result !== 'undefined') {
+      this.levelsMapArrOb$.next(result);
+    }
   }
 
   constructor() {

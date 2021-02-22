@@ -1,16 +1,4 @@
 <mat-tab-group class="tab-group">
-  <mat-tab label="Cro-Marmot">
-    <app-rating-graph [userRatingList]="CroMarmotRatingList"></app-rating-graph>
-    <app-user-rating [userRatingList]="CroMarmotRatingList"></app-user-rating>
-  </mat-tab>
-  <mat-tab label="YeXiaoRain">
-    <app-rating-graph [userRatingList]="YeXiaoRainRatingList"></app-rating-graph>
-    <app-user-rating [userRatingList]="YeXiaoRainRatingList"></app-user-rating>
-  </mat-tab>
-  <mat-tab label="Allen_3">
-    <app-rating-graph [userRatingList]="Allen3RatingList"></app-rating-graph>
-    <app-user-rating [userRatingList]="Allen3RatingList"></app-user-rating>
-  </mat-tab>
   <mat-tab label="Custom">
     <mat-card>
       <mat-form-field>
@@ -18,7 +6,23 @@
       </mat-form-field>
       <button mat-stroked-button (click)="queryCustom()">query</button>
     </mat-card>
-    <app-rating-graph [userRatingList]="CustomRatingList"></app-rating-graph>
-    <app-user-rating [userRatingList]="CustomRatingList"></app-user-rating>
+    <app-rating-graph [userRatingList]="customLists.userRating"></app-rating-graph>
+    <app-user-rating [userRatingList]="customLists.userRating"></app-user-rating>
+    <app-verdicts-stat [userStatusResult]="customLists.userStatus"></app-verdicts-stat>
+    <app-language-stat [userStatusResult]="customLists.userStatus"></app-language-stat>
+    <app-tags-stat [userStatusResult]="customLists.userStatus"></app-tags-stat>
+    <app-level-stat [userStatusResult]="customLists.userStatus"></app-level-stat>
+    <app-rating-stat [userStatusResult]="customLists.userStatus"></app-rating-stat>
+    <app-stat-table [userStatusResult]="customLists.userStatus"></app-stat-table>
+  </mat-tab>
+  <mat-tab *ngFor="let item of defaultLists" [label]="item.label">
+    <app-rating-graph [userRatingList]="item.userRating"></app-rating-graph>
+    <app-user-rating [userRatingList]="item.userRating"></app-user-rating>
+    <app-verdicts-stat [userStatusResult]="item.userStatus"></app-verdicts-stat>
+    <app-language-stat [userStatusResult]="item.userStatus"></app-language-stat>
+    <app-tags-stat [userStatusResult]="item.userStatus"></app-tags-stat>
+    <app-level-stat [userStatusResult]="item.userStatus"></app-level-stat>
+    <app-rating-stat [userStatusResult]="item.userStatus"></app-rating-stat>
+    <app-stat-table [userStatusResult]="item.userStatus"></app-stat-table>
   </mat-tab>
 </mat-tab-group>
