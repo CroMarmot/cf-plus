@@ -82,9 +82,9 @@ export class VerdictsStatComponent implements OnInit, OnDestroy {
   }
 
   updateVerdictGraph(result: VerdictMap[], eChartIns: ECharts): void {
-    if (result.length === 0) {
-      return;
-    }
+    // if (result.length === 0) {
+    //   return;
+    // }
     const verdicts: { [key: string]: number; } = {};
     for (const item of Object.values(result)) {
       if (typeof verdicts[item.verdict] === 'undefined') {

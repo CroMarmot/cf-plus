@@ -5,14 +5,14 @@ import {NgxEchartsModule} from 'ngx-echarts';
 import {CodeforcesRoutingModule} from './codeforces-routing.module';
 import {FormsModule} from '@angular/forms';
 import {AppMaterialModule} from '../app-material/app-material.module';
-import {RatingGraphComponent} from './rating-graph/rating-graph.component';
-import {UserRatingComponent} from './user-rating/user-rating.component';
-import {VerdictsStatComponent} from './verdicts-stat/verdicts-stat.component';
-import {LanguageStatComponent} from './language-stat/language-stat.component';
-import {TagsStatComponent} from './tags-stat/tags-stat.component';
-import {LevelStatComponent} from './level-stat/level-stat.component';
-import {RatingStatComponent} from './rating-stat/rating-stat.component';
-import {StatTableComponent} from './stat-table/stat-table.component';
+import {RatingGraphComponent} from '../components/rating-graph/rating-graph.component';
+import {UserRatingComponent} from '../components/user-rating/user-rating.component';
+import {VerdictsStatComponent} from '../components/verdicts-stat/verdicts-stat.component';
+import {LanguageStatComponent} from '../components/language-stat/language-stat.component';
+import {TagsStatComponent} from '../components/tags-stat/tags-stat.component';
+import {LevelStatComponent} from '../components/level-stat/level-stat.component';
+import {RatingStatComponent} from '../components/rating-stat/rating-stat.component';
+import {StatTableComponent} from '../components/stat-table/stat-table.component';
 
 @NgModule({
   declarations: [

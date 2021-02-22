@@ -2,8 +2,8 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {CodeforcesStaticService} from '../../../services/codeforces-static.service';
 import {EChartOption, ECharts} from 'echarts';
 import {CfUserRatingItem} from '../../../model/CfUserRatingItem';
-import {combineLatest, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {combineLatest, from, of, Subject} from 'rxjs';
+import {map, switchMap, takeUntil, tap} from 'rxjs/operators';
 
 const COLORS = CodeforcesStaticService.getColors();
 
@@ -68,9 +68,12 @@ export class RatingGraphComponent implements OnInit, OnDestroy {
     this.chartOption.visualMap = [vMap];
 
     combineLatest([this.ratingGraphResult$, this.eChartInstance$])
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(([result, eChartIns]) => {
-        this.updateRatingGraph(result, eChartIns);
+      .pipe(
+        takeUntil(this.destroyed$),
+        switchMap(([result, eChartIns]) => of(this.updateRatingGraph(result, eChartIns))),
+      )
+      .subscribe(({ins, options}: { ins: ECharts, options: EChartOption }) => {
+        ins.setOption(options);
       });
   }
 
@@ -83,10 +86,7 @@ export class RatingGraphComponent implements OnInit, OnDestroy {
     this.eChartInstance$.next(eChartsIns);
   }
 
-  updateRatingGraph(result: CfUserRatingItem[], eChartsIns: ECharts): void {
-    if (result.length === 0) {
-      return;
-    }
+  updateRatingGraph(result: CfUserRatingItem[], eChartsIns: ECharts): { ins: ECharts, options: EChartOption } {
     const chartOption: EChartOption = this.chartOption;
     const xAxisData = [];
     result.forEach((value, index) => {
@@ -99,7 +99,6 @@ export class RatingGraphComponent implements OnInit, OnDestroy {
       seriesData.push(v.newRating);
     });
     (chartOption.series as EChartOption.SeriesLines)[0].data = seriesData;
-
-    eChartsIns.setOption(chartOption);
+    return {ins: eChartsIns, options: chartOption};
   }
 }

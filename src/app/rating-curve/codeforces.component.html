@@ -8,21 +8,9 @@
     </mat-card>
     <app-rating-graph [userRatingList]="customLists.userRating"></app-rating-graph>
     <app-user-rating [userRatingList]="customLists.userRating"></app-user-rating>
-    <app-verdicts-stat [userStatusResult]="customLists.userStatus"></app-verdicts-stat>
-    <app-language-stat [userStatusResult]="customLists.userStatus"></app-language-stat>
-    <app-tags-stat [userStatusResult]="customLists.userStatus"></app-tags-stat>
-    <app-level-stat [userStatusResult]="customLists.userStatus"></app-level-stat>
-    <app-rating-stat [userStatusResult]="customLists.userStatus"></app-rating-stat>
-    <app-stat-table [userStatusResult]="customLists.userStatus"></app-stat-table>
   </mat-tab>
   <mat-tab *ngFor="let item of defaultLists" [label]="item.label">
     <app-rating-graph [userRatingList]="item.userRating"></app-rating-graph>
     <app-user-rating [userRatingList]="item.userRating"></app-user-rating>
-    <app-verdicts-stat [userStatusResult]="item.userStatus"></app-verdicts-stat>
-    <app-language-stat [userStatusResult]="item.userStatus"></app-language-stat>
-    <app-tags-stat [userStatusResult]="item.userStatus"></app-tags-stat>
-    <app-level-stat [userStatusResult]="item.userStatus"></app-level-stat>
-    <app-rating-stat [userStatusResult]="item.userStatus"></app-rating-stat>
-    <app-stat-table [userStatusResult]="item.userStatus"></app-stat-table>
   </mat-tab>
 </mat-tab-group>

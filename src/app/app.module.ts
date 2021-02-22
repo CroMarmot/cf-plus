@@ -10,17 +10,17 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppMaterialModule} from './app-material/app-material.module';
-import {AnnualReportComponent} from './annual-report/annual-report.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {NgxEchartsModule} from 'ngx-echarts';
 import {CodeforcesModule} from './rating-curve/codeforces.module';
+import {ReportComponent} from './report/report.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StatisticsComponent,
-    AnnualReportComponent,
     PageNotFoundComponent,
+    ReportComponent,
   ],
   imports: [
     BrowserModule,

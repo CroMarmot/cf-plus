@@ -31,7 +31,7 @@ export class StatTableComponent implements OnInit, OnDestroy {
     this.userStatusMapArrOb$
       .pipe(takeUntil(this.destroyed$))
       .subscribe((result) => {
-        this.updateVerdictGraph(result);
+        this.updateView(result);
       });
   }
 
@@ -40,11 +40,10 @@ export class StatTableComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
-  updateVerdictGraph(result: UserStatus[]): void {
-
-    if (result.length === 0) {
-      return;
-    }
+  updateView(result: UserStatus[]): void {
+    // if (result.length === 0) {
+    //   return;
+    // }
     const problems: { [key: string]: { failed: number, solved: number, attempts: number } } = {};
     result.forEach(item => {
       const problemId = `${item.problem.contestId}-${item.problem.index}`;
@@ -108,7 +107,7 @@ export class StatTableComponent implements OnInit, OnDestroy {
     let maxAc = 0;
     let maxAcProblem = '';
     let solvedWithOneSub = 0;
-
+    this.unsolved = [];
     for (const [p, item] of Object.entries(problems)) {
       tried++;
       if (item.solved > 0) {
@@ -133,15 +132,18 @@ export class StatTableComponent implements OnInit, OnDestroy {
         solvedWithOneSub++;
       }
     }
-    this.dataSource.push({name: 'Tried', value: `${tried}`});
-    this.dataSource.push({name: 'Solved', value: `${solved}`});
-    this.dataSource.push({name: 'Average attempts(AC)', value: (totalAttempt / solved).toFixed(2)});
-    this.dataSource.push({name: 'Max attempts', value: `${maxAttempt}(${maxAttemptProblem})`});
-    if (solved) {
-      this.dataSource = this.dataSource.concat({
-        name: 'Solved with one submission',
-        value: `${solvedWithOneSub}(${(solvedWithOneSub / solved * 100).toFixed(2)}%)`
-      });
+    this.dataSource = [];
+    if (result.length > 0) {
+      this.dataSource.push({name: 'Tried', value: `${tried}`});
+      this.dataSource.push({name: 'Solved', value: `${solved}`});
+      this.dataSource.push({name: 'Average attempts(AC)', value: (totalAttempt / solved).toFixed(2)});
+      this.dataSource.push({name: 'Max attempts', value: `${maxAttempt}(${maxAttemptProblem})`});
+      if (solved) {
+        this.dataSource = this.dataSource.concat({
+          name: 'Solved with one submission',
+          value: `${solvedWithOneSub}(${(solvedWithOneSub / solved * 100).toFixed(2)}%)`
+        });
+      }
     }
   }
 }

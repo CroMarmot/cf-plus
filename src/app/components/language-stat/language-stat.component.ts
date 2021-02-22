@@ -81,9 +81,9 @@ export class LanguageStatComponent implements OnInit, OnDestroy {
   }
 
   updateLanguageGraph(result: LanguageMap[], eChartIns: ECharts): void {
-    if (result.length === 0) {
-      return;
-    }
+    // if (result.length === 0) {
+    //   return;
+    // }
     const languages: { [key: string]: number; } = {};
     for (const item of Object.values(result)) {
       if (typeof languages[item.programmingLanguage] === 'undefined') {

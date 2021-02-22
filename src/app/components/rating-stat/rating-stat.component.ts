@@ -95,9 +95,9 @@ export class RatingStatComponent implements OnInit, OnDestroy {
   }
 
   updateRatingGraph(result: RatingMap[], eChartsIns: ECharts): void {
-    if (result.length === 0) {
-      return;
-    }
+    // if (result.length === 0) {
+    //   return;
+    // }
     // [problem id] = {};
     const problems: { [key: string]: { failed: number, solved: number } } = {};
     result.forEach(item => {

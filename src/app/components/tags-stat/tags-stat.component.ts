@@ -87,9 +87,9 @@ export class TagsStatComponent implements OnInit, OnDestroy {
   }
 
   updateVerdictGraph(result: TagsMap[], eChartsIns: ECharts): void {
-    if (result.length === 0) {
-      return;
-    }
+    // if (result.length === 0) {
+    //   return;
+    // }
     const problems: { [key: string]: { failed: number, solved: number } } = {};
     result.forEach(item => {
       const problemId = `${item.problem.contestId}-${item.problem.index}`;
