@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1600962633227,
+  "timestamp": 1613988684738,
   "index": "/cf-plus/index.html",
   "assetGroups": [
     {
@@ -12,13 +12,12 @@
       },
       "urls": [
         "/cf-plus/1.5f957b0119b44d1f0793.js",
-        "/cf-plus/5.0b7c697f004df4c464b7.js",
         "/cf-plus/favicon.ico",
         "/cf-plus/index.html",
-        "/cf-plus/main.b740d994e19aad4309c7.js",
+        "/cf-plus/main.0633244440ada18b46cb.js",
         "/cf-plus/manifest.webmanifest",
         "/cf-plus/polyfills.2b9efda34b919da8fe8a.js",
-        "/cf-plus/runtime.ebc9b2ac75e5b8e40eb5.js",
+        "/cf-plus/runtime.148d6661f0dc8107f216.js",
         "/cf-plus/styles.5c09cfe94ac0d19851c6.css"
       ],
       "patterns": []
@@ -46,7 +45,6 @@
   "dataGroups": [],
   "hashTable": {
     "/cf-plus/1.5f957b0119b44d1f0793.js": "0351d5467cddce033b993d1f205ed86c92181df9",
-    "/cf-plus/5.0b7c697f004df4c464b7.js": "541e6af640bf06f4129377906e81af4ed15232f8",
     "/cf-plus/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
     "/cf-plus/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
     "/cf-plus/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
@@ -56,11 +54,11 @@
     "/cf-plus/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
     "/cf-plus/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
     "/cf-plus/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/cf-plus/index.html": "da85c4787c12ed09411d6ede4732543f7a8fb4c3",
-    "/cf-plus/main.b740d994e19aad4309c7.js": "c3398369ca01776e3c18fbb4c8251f957857e575",
+    "/cf-plus/index.html": "f69c6b5cd9e94864449e5bd980facaf7471eeb06",
+    "/cf-plus/main.0633244440ada18b46cb.js": "5df420837146d83474fcd5357c3b287770b9f4f5",
     "/cf-plus/manifest.webmanifest": "094ed1123bd83cc7d0344da7e54d6782bbbe9ec6",
     "/cf-plus/polyfills.2b9efda34b919da8fe8a.js": "9db3f1bf5afbecb31233abc0b143858b395cc9e9",
-    "/cf-plus/runtime.ebc9b2ac75e5b8e40eb5.js": "024cd8f759f8cba3af1b200be49df18881ff26fa",
+    "/cf-plus/runtime.148d6661f0dc8107f216.js": "eb4694bb5ab488d7037b1d2a4f299ff41008ec39",
     "/cf-plus/styles.5c09cfe94ac0d19851c6.css": "f7b7e3bc5642549f6800a23a347f16f75ae511ea"
   },
   "navigationUrls": [
