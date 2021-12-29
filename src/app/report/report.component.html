@@ -11,14 +11,13 @@
     <mat-option>Clear</mat-option>
     <mat-option *ngFor="let y of yearList" [value]="y">{{y}}</mat-option>
   </mat-select>
-  <mat-error *ngIf="yearControl.hasError('required')">You must make a selection</mat-error>
-  <mat-error *ngIf="yearControl.hasError('pattern') && !yearControl.hasError('required')">
+  <mat-error *ngIf="yearControl.hasError('pattern')">
     Your selection is invalid
   </mat-error>
 </mat-form-field>
 <button mat-raised-button (click)="Go()">Go</button>
-<div> ratingFetching: {{ ratingFetching$ | async}}</div>
-<div> statusFetching: {{ statusFetching$ | async}}</div>
+<div> ratingFetching: {{ ratingFetching }}</div>
+<div> statusFetching: {{ statusFetching }}</div>
 <app-rating-graph [userRatingList]="userRating"></app-rating-graph>
 <app-user-rating [userRatingList]="userRating"></app-user-rating>
 <app-verdicts-stat [userStatusResult]="userStatus"></app-verdicts-stat>

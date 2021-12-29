@@ -7,7 +7,7 @@ import {BehaviorSubject, ReplaySubject, Subject} from 'rxjs';
 
 function year2startend(year: string): { start, end } {
   let start = 2000;
-  let end = (new Date()).getFullYear();
+  let end = (new Date()).getFullYear() + 1;
   if (/^\d{4}$/.test(year)) {
     start = Number(year);
     end = Number(year) + 1;
@@ -30,8 +30,8 @@ export class ReportComponent implements OnInit, OnDestroy {
     Validators.pattern(/^20\d\d$/),
   ]);
 
-  ratingFetching$ = new BehaviorSubject(false);
-  statusFetching$ = new BehaviorSubject(false);
+  ratingFetching = false;
+  statusFetching = false;
 
   userName = '';
 
@@ -64,20 +64,20 @@ export class ReportComponent implements OnInit, OnDestroy {
     // TODO how to merge into one with switchMap
     queryOb$.pipe(switchMap(async ({handle, year}) => {
       this.userRating = [];
-      this.ratingFetching$.next(true);
+      this.ratingFetching = true;
       return {ret: await this.codeforcesApiService.getUserRating(handle), year};
     })).subscribe(({ret, year: {start, end}}) => {
-      this.ratingFetching$.next(false);
+      this.ratingFetching = false;
       this.userRating = ret.result.filter(item =>
         item.ratingUpdateTimeSeconds * 1000 >= start && item.ratingUpdateTimeSeconds * 1000 <= end
       );
     });
     queryOb$.pipe(switchMap(async ({handle, year}) => {
       this.userStatus = [];
-      this.statusFetching$.next(true);
+      this.statusFetching = true;
       return {ret: await this.codeforcesApiService.getUserStatus(handle), year};
     })).subscribe(({ret, year: {start, end}}) => {
-      this.statusFetching$.next(false);
+      this.statusFetching = false;
       this.userStatus = ret.result.filter(item =>
         item.creationTimeSeconds * 1000 >= start && item.creationTimeSeconds * 1000 <= end
       );
@@ -88,7 +88,7 @@ export class ReportComponent implements OnInit, OnDestroy {
     this.router.navigate([], {
       queryParams: {
         handle: this.userName,
-        year: this.yearControl.value
+        year: this.yearControl.value || undefined
       }
     });
   }
