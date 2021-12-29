@@ -28,10 +28,11 @@ jobs:
           npm install
       - name: Build
         run: ng build --prod --base-href=/cf-plus/
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@3.5.7
-        with:
+      
+      - name: Deploy to GitHub Pages
+        uses: Cecilapp/GitHub-Pages-deploy@v3
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: dist/cf-plus/ # The folder the action should deploy.
-          CLEAN: true # Automatically remove deleted files from the deploy branch
+        with:
+          email: yexiaorain@gmail.com
+          build_dir: dist/cf-plus/
