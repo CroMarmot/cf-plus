@@ -12,8 +12,15 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppMaterialModule} from './app-material/app-material.module';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {NgxEchartsModule} from 'ngx-echarts';
-import {CodeforcesModule} from './rating-curve/codeforces.module';
 import {ReportComponent} from './report/report.component';
+import { RatingGraphComponent } from './components/rating-graph/rating-graph.component';
+import { UserRatingComponent } from './components/user-rating/user-rating.component';
+import { VerdictsStatComponent } from './components/verdicts-stat/verdicts-stat.component';
+import { LanguageStatComponent } from './components/language-stat/language-stat.component';
+import { TagsStatComponent } from './components/tags-stat/tags-stat.component';
+import { LevelStatComponent } from './components/level-stat/level-stat.component';
+import { RatingStatComponent } from './components/rating-stat/rating-stat.component';
+import { StatTableComponent } from './components/stat-table/stat-table.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +28,14 @@ import {ReportComponent} from './report/report.component';
     StatisticsComponent,
     PageNotFoundComponent,
     ReportComponent,
+    RatingGraphComponent,
+    UserRatingComponent,
+    VerdictsStatComponent,
+    LanguageStatComponent,
+    TagsStatComponent,
+    LevelStatComponent,
+    RatingStatComponent,
+    StatTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,7 +49,6 @@ import {ReportComponent} from './report/report.component';
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
     BrowserAnimationsModule,
-    CodeforcesModule,
   ],
   exports: [],
   providers: [],

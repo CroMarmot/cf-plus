@@ -7,11 +7,6 @@ import {ReportComponent} from './report/report.component';
 const routes: Routes = [
   {path: 'statistics', component: StatisticsComponent},
   {path: 'annual', component: ReportComponent},
-  {
-    path: 'curve',
-    loadChildren: () => import('./rating-curve/codeforces.module').then(mod => mod.CodeforcesModule),
-    data: {preload: true},
-  },
   {path: '**', component: PageNotFoundComponent},
 ];
 
