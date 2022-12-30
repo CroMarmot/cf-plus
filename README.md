@@ -1,6 +1,8 @@
-# CfPlus
+# Cf-Plus
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.1.
+https://cromarmot.github.io/cf-plus
+
+with Angular 15
 
 ## Development server
 
