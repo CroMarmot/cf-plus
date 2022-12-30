@@ -1,7 +1,13 @@
 <mat-form-field class="example-full-width">
   <mat-label>Handle</mat-label>
-  <input matInput placeholder="Ex. Cro-Marmot" [(ngModel)]="userName"/>
-  <button mat-button *ngIf="userName" matSuffix mat-icon-button aria-label="Clear" (click)="userName=''">
+  <input matInput placeholder="Ex. Cro-Marmot" [(ngModel)]="userName" />
+  <button
+    *ngIf="userName"
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    (click)="userName = ''"
+  >
     <mat-icon>close</mat-icon>
   </button>
 </mat-form-field>
@@ -9,15 +15,15 @@
   <mat-label>Year</mat-label>
   <mat-select [formControl]="yearControl">
     <mat-option>Clear</mat-option>
-    <mat-option *ngFor="let y of yearList" [value]="y">{{y}}</mat-option>
+    <mat-option *ngFor="let y of yearList" [value]="y">{{ y }}</mat-option>
   </mat-select>
   <mat-error *ngIf="yearControl.hasError('pattern')">
     Your selection is invalid
   </mat-error>
 </mat-form-field>
 <button mat-raised-button (click)="Go()">Go</button>
-<div> ratingFetching: {{ ratingFetching }}</div>
-<div> statusFetching: {{ statusFetching }}</div>
+<div>ratingFetching: {{ ratingFetching }}</div>
+<div>statusFetching: {{ statusFetching }}</div>
 <app-rating-graph [userRatingList]="userRating"></app-rating-graph>
 <app-user-rating [userRatingList]="userRating"></app-user-rating>
 <app-verdicts-stat [userStatusResult]="userStatus"></app-verdicts-stat>
