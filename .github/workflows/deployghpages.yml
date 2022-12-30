@@ -21,13 +21,14 @@ jobs:
           path: |
             ~/.cache
             **/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install Dependencies
         run: |
-          npm install -g @angular/cli@latest
-          npm install
+          npm install -g yarn
+          yarn add @angular/cli
+          yarn
       - name: Build
-        run: ng build --prod --base-href=/cf-plus/
+        run: yarn build --prod --base-href=/cf-plus/
 
       - name: Deploy to GitHub Pages
         uses: Cecilapp/GitHub-Pages-deploy@v3
