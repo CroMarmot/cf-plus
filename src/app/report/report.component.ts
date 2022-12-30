@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CodeforcesApiService} from '../../services/codeforces-api.service';
-import {FormControl, Validators} from '@angular/forms';
+import {UntypedFormControl, Validators} from '@angular/forms';
 import {filter, map, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {BehaviorSubject, ReplaySubject, Subject} from 'rxjs';
 
@@ -26,7 +26,7 @@ function year2startend(year: string): { start, end } {
 export class ReportComponent implements OnInit, OnDestroy {
   destroy$ = new Subject();
 
-  yearControl: FormControl = new FormControl('valid', [
+  yearControl: UntypedFormControl = new UntypedFormControl('valid', [
     Validators.pattern(/^20\d\d$/),
   ]);
 
