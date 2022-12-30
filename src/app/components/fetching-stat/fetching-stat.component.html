@@ -1,0 +1,21 @@
+<div *ngIf="stat != FetchStat.Before">
+  {{ text }}
+  <span *ngIf="stat == FetchStat.Fetching" style="display: inline-block"
+    ><mat-spinner diameter="20"></mat-spinner
+  ></span>
+  <mat-icon
+    *ngIf="stat == FetchStat.Failed"
+    aria-hidden="false"
+    aria-label="success"
+    fontIcon="close"
+    class="red-icon"
+  >
+  </mat-icon>
+  <mat-icon
+    *ngIf="stat == FetchStat.Success"
+    aria-hidden="false"
+    aria-label="success"
+    fontIcon="check"
+    class="green-icon"
+  ></mat-icon>
+</div>

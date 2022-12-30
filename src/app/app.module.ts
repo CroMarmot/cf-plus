@@ -21,6 +21,7 @@ import { TagsStatComponent } from './components/tags-stat/tags-stat.component';
 import { LevelStatComponent } from './components/level-stat/level-stat.component';
 import { RatingStatComponent } from './components/rating-stat/rating-stat.component';
 import { StatTableComponent } from './components/stat-table/stat-table.component';
+import { FetchingStatComponent } from './components/fetching-stat/fetching-stat.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { StatTableComponent } from './components/stat-table/stat-table.component
     LevelStatComponent,
     RatingStatComponent,
     StatTableComponent,
+    FetchingStatComponent,
   ],
   imports: [
     BrowserModule,
