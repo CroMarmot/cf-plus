@@ -22,6 +22,8 @@ import { LevelStatComponent } from './components/level-stat/level-stat.component
 import { RatingStatComponent } from './components/rating-stat/rating-stat.component';
 import { StatTableComponent } from './components/stat-table/stat-table.component';
 import { FetchingStatComponent } from './components/fetching-stat/fetching-stat.component';
+import { MainPageComponent } from './main-page/main-page.component';
+import { SharePageComponent } from './share-page/share-page.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { FetchingStatComponent } from './components/fetching-stat/fetching-stat.
     RatingStatComponent,
     StatTableComponent,
     FetchingStatComponent,
+    MainPageComponent,
+    SharePageComponent,
   ],
   imports: [
     BrowserModule,

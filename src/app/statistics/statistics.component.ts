@@ -3,7 +3,7 @@ import { Date2GR, YearData } from '../../model/models';
 import { intDiv, nextDayNumber, timestamp2number } from '../../js/utils';
 import { CodeforcesApiService } from '../../services/codeforces-api.service';
 import { UserStatus } from '../../model/response';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { filter, map, takeUntil, tap } from 'rxjs/operators';
 import { year2startend } from '../utils/year2startend';
 import { Subject } from 'rxjs';
@@ -20,7 +20,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     Validators.pattern(/^20\d\d$/),
   ]);
 
-  userName = 'Cro-Marmot';
+  userName = '';
   userData: UserStatus[] = [];
   errorReason = '';
   searching = false;
@@ -28,6 +28,7 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private codeforcesApiService: CodeforcesApiService
   ) {}
 
@@ -45,25 +46,31 @@ export class StatisticsComponent implements OnInit, OnDestroy {
         tap(({ handle }) => (this.userName = handle)),
         map((r) => ({ handle: r.handle, year: year2startend(r.year) }))
       )
-      .subscribe((r) => {
-        // queryOb$.next(r);
+      .subscribe(async (r) => {
+        this.searching = true;
+        this.userData = (
+          await this.codeforcesApiService.getUserStatus(this.userName)
+        ).result;
+        this.searching = false;
+        // }).catch((reason) => {
+        //   this.searching = false
+        //   this.errorReason = `未找到结果(${reason})`
+        // })
+        this.greenRed = this.calcGreenRed();
       });
   }
 
   async getData(): Promise<void> {
-    this.searching = true;
-    this.userData = (
-      await this.codeforcesApiService.getUserStatus(this.userName)
-    ).result;
-    this.searching = false;
-    // }).catch((reason) => {
-    //   this.searching = false
-    //   this.errorReason = `未找到结果(${reason})`
-    // })
-    this.greenRed = this.calcGreenRed();
+    this.router.navigate([], {
+      queryParams: {
+        handle: this.userName,
+        year: this.yearControl.value || undefined,
+      },
+    });
   }
 
   calcGreenRed(): YearData[] {
+    // collect as map
     const d2ggMap: Map<number, Date2GR> = new Map(null);
     if (this.userData.length === 0) {
       return [];
@@ -80,33 +87,27 @@ export class StatisticsComponent implements OnInit, OnDestroy {
       d2ggMap.set(key, record.addResult(raw.verdict));
       minDate = Math.min(minDate, key);
     });
+
     // 开始年的一月一日
-    minDate = intDiv(minDate, 10000) * 10000 + 101;
+    minDate = intDiv(minDate, 10000) * 10000 + 101; // 19xx0101
     let year = 1970;
+    let yd = new YearData(1970);
     let dateList = [];
     const ret: YearData[] = [];
     for (let i = minDate; i <= todayDate; i = nextDayNumber(i)) {
       const pushData = d2ggMap.has(i) ? d2ggMap.get(i) : new Date2GR(i);
       if (intDiv(pushData.day, 10000) !== year) {
-        if (dateList.length !== 0) {
-          ret.push({ year, dateList });
+        if (yd.weekList.length !== 0) {
+          ret.push(yd);
         }
-        dateList = [];
         year = intDiv(pushData.day, 10000);
+        yd = new YearData(year);
       }
-      dateList.push(pushData);
+      yd.add(pushData);
     }
-    if (dateList.length !== 0) {
-      ret.push({ year, dateList });
+    if (yd.weekList.length !== 0) {
+      ret.push(yd);
     }
     return ret;
   }
-
-  // filters: {
-  //   'formatDate': (value) => {
-  //     if (value) {
-  //       return dateParse(value * 1000).join(' ')
-  //     }
-  //   }
-  // },
 }

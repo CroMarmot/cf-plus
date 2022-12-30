@@ -1,18 +1,18 @@
 import {Injectable} from '@angular/core';
 import {UserRatingResp, UserStatusResp} from '../model/response';
-import {CacheTool} from '../js/utils';
+import {LSCacheTool} from '../js/utils';
 // import UserStatus from './user.status.js';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CodeforcesApiService {
-  userStatusCache: CacheTool<UserStatusResp>;
-  userRatingCache: CacheTool<UserRatingResp>;
+  userStatusCache: LSCacheTool<UserStatusResp>;
+  userRatingCache: LSCacheTool<UserRatingResp>;
 
   constructor() {
-    this.userStatusCache = new CacheTool<UserStatusResp>();
-    this.userRatingCache = new CacheTool<UserRatingResp>();
+    this.userStatusCache = new LSCacheTool<UserStatusResp>('user.status.');
+    this.userRatingCache = new LSCacheTool<UserRatingResp>('user.rating.');
   }
 
   getUserStatus(userName: string): Promise<UserStatusResp> {

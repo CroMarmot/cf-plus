@@ -1,49 +1,53 @@
 <section class="statistics-container">
-  <div>
-    <form class="example-form">
-      <mat-form-field class="example-full-width">
-        <mat-label>Handle</mat-label>
-        <input
-          matInput
-          placeholder="Ex. Cro-Marmot"
-          [(ngModel)]="userName"
-          name="userName"
-        />
-        <button
-          *ngIf="userName"
-          matSuffix
-          mat-icon-button
-          aria-label="Clear"
-          (click)="userName = ''"
-        >
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
-    </form>
-    <button mat-raised-button (click)="getData()">Search</button>
-    <div *ngIf="searching">searching...</div>
-    <div class="errorReason" *ngIf="errorReason !== ''">{{ errorReason }}</div>
-  </div>
-  <div class="ui-div-box">
-    <div class="ui-div-eachyear" *ngFor="let item of greenRed">
-      <h4>{{ item.year }}</h4>
-      <div class="ui-div-eachyear-data">
-        <div class="ui-div-datapart">
-          <div *ngFor="let v of item.dateList" class="ui-div-eachday">
-            <div
-              class="ui-div-square bggrey"
-              *ngIf="v.green + v.red === 0"
-              [ngClass]="['year' + item.year, 'month' + v.month]"
-            ></div>
-            <div class="ui-div-square" *ngIf="v.green + v.red !== 0">
+  <div class="statistics-main">
+    <div>
+      <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <mat-label>Handle</mat-label>
+          <input
+            matInput
+            placeholder="Ex. Cro-Marmot"
+            [(ngModel)]="userName"
+            name="userName"
+          />
+          <button
+            *ngIf="userName"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+            (click)="userName = ''"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </form>
+      <button mat-raised-button (click)="getData()">Search</button>
+      <div *ngIf="searching">searching...</div>
+      <div class="errorReason" *ngIf="errorReason !== ''">
+        {{ errorReason }}
+      </div>
+    </div>
+    <div class="ui-box">
+      <div class="ui-year" *ngFor="let item of greenRed">
+        <h4>{{ item.year }}</h4>
+        <div class="ui-year-data">
+          <div *ngFor="let week of item.weekList" class="ui-week">
+            <div *ngFor="let v of week" class="ui-day">
               <div
-                class="ui-div-square-sub bggreen"
-                [ngStyle]="{ flex: v.green }"
+                class="ui-square bggrey"
+                *ngIf="v.green + v.red === 0"
+                [ngClass]="['year' + item.year, 'month' + v.month]"
               ></div>
-              <div
-                class="ui-div-square-gsub bgred"
-                [ngStyle]="{ flex: v.red }"
-              ></div>
+              <div class="ui-square" *ngIf="v.green + v.red !== 0">
+                <div
+                  class="ui-square-sub bggreen"
+                  [ngStyle]="{ flex: v.green }"
+                ></div>
+                <div
+                  class="ui-square-gsub bgred"
+                  [ngStyle]="{ flex: v.red }"
+                ></div>
+              </div>
             </div>
           </div>
         </div>
