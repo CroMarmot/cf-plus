@@ -13,7 +13,7 @@ import { FetchStat } from '../components/fetching-stat/FetchStat';
   styleUrls: ['./report.component.less'],
 })
 export class ReportComponent implements OnInit, OnDestroy {
-  destroy$ = new Subject();
+  destroy$ = new Subject<void>();
 
   yearControl: UntypedFormControl = new UntypedFormControl('valid', [
     Validators.pattern(/^20\d\d$/),
