@@ -1,5 +1,5 @@
 import { throwIfEmpty } from 'rxjs/operators';
-import { intDiv } from '../js/utils';
+import { intDiv } from '../app/utils/utils';
 
 export class Date2GR {
   public day: number;
@@ -32,12 +32,10 @@ export class Date2GR {
 
 export class YearData {
   public year: number;
-  public dateList: Date2GR[];
   public weekList: Date2GR[][];
 
   constructor(year) {
     this.year = year;
-    this.dateList = [];
     this.weekList = [];
   }
 

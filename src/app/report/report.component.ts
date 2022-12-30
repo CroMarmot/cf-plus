@@ -25,6 +25,7 @@ export class ReportComponent implements OnInit, OnDestroy {
   statusFetching: FetchStat = FetchStat.Before;
 
   userName = '';
+  queryUserName = '';
 
   userRating = [];
   userStatus = [];
@@ -42,12 +43,15 @@ export class ReportComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const queryOb$ = new ReplaySubject(1);
+    const queryOb$ = new ReplaySubject<{
+      handle: string;
+      year: { start: number; end: number };
+    }>(1);
     this.route.queryParams
       .pipe(
         takeUntil(this.destroy$),
         tap(({ year }) => this.yearControl.setValue(year || '')),
-        filter(({ handle }) => !!handle),
+        // filter(({ handle }) => !!handle),
         tap(({ handle }) => (this.userName = handle)),
         map((r) => ({ handle: r.handle, year: year2startend(r.year) }))
       )
@@ -58,6 +62,7 @@ export class ReportComponent implements OnInit, OnDestroy {
     // TODO how to merge into one with switchMap
     queryOb$
       .pipe(
+        tap(({ handle }) => (this.queryUserName = handle)),
         switchMap(async ({ handle, year }) => {
           this.userRating = [];
           this.ratingFetching = FetchStat.Fetching;

@@ -1,34 +1,7 @@
 <section class="statistics-container">
   <div class="statistics-main">
-    <div>
-      <form class="example-form">
-        <mat-form-field class="example-full-width">
-          <mat-label>Handle</mat-label>
-          <input
-            matInput
-            placeholder="Ex. Cro-Marmot"
-            [(ngModel)]="userName"
-            name="userName"
-          />
-          <button
-            *ngIf="userName"
-            matSuffix
-            mat-icon-button
-            aria-label="Clear"
-            (click)="userName = ''"
-          >
-            <mat-icon>close</mat-icon>
-          </button>
-        </mat-form-field>
-      </form>
-      <button mat-raised-button (click)="getData()">Search</button>
-      <div *ngIf="searching">searching...</div>
-      <div class="errorReason" *ngIf="errorReason !== ''">
-        {{ errorReason }}
-      </div>
-    </div>
     <div class="ui-box">
-      <div class="ui-year" *ngFor="let item of greenRed">
+      <div class="ui-year" *ngFor="let item of yearsResult">
         <h4>{{ item.year }}</h4>
         <div class="ui-year-data">
           <div *ngFor="let week of item.weekList" class="ui-week">

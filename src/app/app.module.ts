@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { StatisticsComponent } from './statistics/statistics.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,11 +23,11 @@ import { StatTableComponent } from './components/stat-table/stat-table.component
 import { FetchingStatComponent } from './components/fetching-stat/fetching-stat.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { SharePageComponent } from './share-page/share-page.component';
+import { YearStatComponent } from './components/year-stat/year-stat.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    StatisticsComponent,
     PageNotFoundComponent,
     ReportComponent,
     RatingGraphComponent,
@@ -42,6 +41,7 @@ import { SharePageComponent } from './share-page/share-page.component';
     FetchingStatComponent,
     MainPageComponent,
     SharePageComponent,
+    YearStatComponent,
   ],
   imports: [
     BrowserModule,

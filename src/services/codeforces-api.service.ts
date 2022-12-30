@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {UserRatingResp, UserStatusResp} from '../model/response';
-import {LSCacheTool} from '../js/utils';
+import { Injectable } from '@angular/core';
+import { UserRatingResp, UserStatusResp } from '../model/response';
+import { LSCacheTool } from '../app/utils/utils';
 // import UserStatus from './user.status.js';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CodeforcesApiService {
   userStatusCache: LSCacheTool<UserStatusResp>;
@@ -16,15 +16,31 @@ export class CodeforcesApiService {
   }
 
   getUserStatus(userName: string): Promise<UserStatusResp> {
-    // return Promise.resolve(UserStatus);
+    if (!userName) {
+      return Promise.resolve({
+        status: 'OK',
+        result: [],
+      });
+    }
+    // https://codeforces.com/apiHelp/methods#user.status
     return this.userStatusCache.Get(userName, () =>
-      fetch(`https://codeforces.com/api/user.status?handle=${userName}`).then(res => res.json())
+      fetch(`https://codeforces.com/api/user.status?handle=${userName}`).then(
+        (res) => res.json()
+      )
     );
   }
 
   getUserRating(userName: string): Promise<UserRatingResp> {
+    if (!userName) {
+      return Promise.resolve({
+        status: 'OK',
+        result: [],
+      });
+    }
     return this.userRatingCache.Get(userName, () =>
-      fetch(`https://codeforces.com/api/user.rating?handle=${userName}`).then(res => res.json())
+      fetch(`https://codeforces.com/api/user.rating?handle=${userName}`).then(
+        (res) => res.json()
+      )
     );
   }
 }

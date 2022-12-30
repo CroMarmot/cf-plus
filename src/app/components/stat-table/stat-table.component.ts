@@ -1,38 +1,38 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {UserStatus} from '../../../model/response';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
+import { Submission } from '../../../model/Submission';
 
 @Component({
   selector: 'app-stat-table',
   templateUrl: './stat-table.component.html',
-  styleUrls: ['./stat-table.component.less']
+  styleUrls: ['./stat-table.component.less'],
 })
 export class StatTableComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['name', 'value'];
-  dataSource: { name: string, value: string }[] = [];
-  unsolved: { name: string, url: string }[] = [];
+  dataSource: { name: string; value: string }[] = [];
+  unsolved: { name: string; url: string }[] = [];
 
   // track the page life
   private destroyed$ = new Subject<void>();
 
-  userStatusMapArrOb$ = new Subject<UserStatus[]>();
+  userStatusMapArrOb$ = new Subject<Submission[]>();
 
-  @Input() set userStatusResult(result: UserStatus[]) {
+  @Input() set userStatusResult(result: Submission[]) {
     if (typeof result !== 'undefined') {
       this.userStatusMapArrOb$.next(result);
     }
   }
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.userStatusMapArrOb$
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((result) => {
-        this.updateView(result);
-      });
+      .pipe(
+        takeUntil(this.destroyed$),
+        tap((result) => this.updateView(result))
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
@@ -40,25 +40,28 @@ export class StatTableComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
-  updateView(result: UserStatus[]): void {
+  updateView(result: Submission[]): void {
     // if (result.length === 0) {
     //   return;
     // }
-    const problems: { [key: string]: { failed: number, solved: number, attempts: number } } = {};
-    result.forEach(item => {
+    const problems: {
+      [key: string]: { failed: number; solved: number; attempts: number };
+    } = {};
+    result.forEach((item) => {
       const problemId = `${item.problem.contestId}-${item.problem.index}`;
       if (typeof problems[problemId] === 'undefined') {
         // first submission of a problem
         problems[problemId] = {
           attempts: 0,
           failed: 0,
-          solved: 0 // We also want to save how many submission got AC, a better name would have been number_of_ac
+          solved: 0, // We also want to save how many submission got AC, a better name would have been number_of_ac
         };
       }
     });
-    const solvedTags: { [key: string]: number; } = {};
-    const failedTags: { [key: string]: number; } = {};
-    result.forEach(item => { // don't change order
+    const solvedTags: { [key: string]: number } = {};
+    const failedTags: { [key: string]: number } = {};
+    result.forEach((item) => {
+      // don't change order
       const problemId = `${item.problem.contestId}-${item.problem.index}`;
       if (item.verdict === 'OK') {
         problems[problemId].solved++;
@@ -85,9 +88,9 @@ export class StatTableComponent implements OnInit, OnDestroy {
       }
     });
 
-    const solvedDataList: { name: string, value: number }[] = [];
+    const solvedDataList: { name: string; value: number }[] = [];
     for (const [name, value] of Object.entries(solvedTags)) {
-      solvedDataList.push({name, value});
+      solvedDataList.push({ name, value });
     }
     solvedDataList.sort((v0, v1) => v1.value - v0.value);
 
@@ -116,7 +119,10 @@ export class StatTableComponent implements OnInit, OnDestroy {
       }
       if (item.solved === 0) {
         const [contestId, pId] = p.split('-');
-        this.unsolved.push({name: p, url: `https://codeforces.com/contest/${contestId}/problem/${pId}`});
+        this.unsolved.push({
+          name: p,
+          url: `https://codeforces.com/contest/${contestId}/problem/${pId}`,
+        });
       }
       if (item.attempts > maxAttempt) {
         maxAttempt = item.attempts;
@@ -134,14 +140,23 @@ export class StatTableComponent implements OnInit, OnDestroy {
     }
     this.dataSource = [];
     if (result.length > 0) {
-      this.dataSource.push({name: 'Tried', value: `${tried}`});
-      this.dataSource.push({name: 'Solved', value: `${solved}`});
-      this.dataSource.push({name: 'Average attempts(AC)', value: (totalAttempt / solved).toFixed(2)});
-      this.dataSource.push({name: 'Max attempts', value: `${maxAttempt}(${maxAttemptProblem})`});
+      this.dataSource.push({ name: 'Tried', value: `${tried}` });
+      this.dataSource.push({ name: 'Solved', value: `${solved}` });
+      this.dataSource.push({
+        name: 'Average attempts(AC)',
+        value: (totalAttempt / solved).toFixed(2),
+      });
+      this.dataSource.push({
+        name: 'Max attempts',
+        value: `${maxAttempt}(${maxAttemptProblem})`,
+      });
       if (solved) {
         this.dataSource = this.dataSource.concat({
           name: 'Solved with one submission',
-          value: `${solvedWithOneSub}(${(solvedWithOneSub / solved * 100).toFixed(2)}%)`
+          value: `${solvedWithOneSub}(${(
+            (solvedWithOneSub / solved) *
+            100
+          ).toFixed(2)}%)`,
         });
       }
     }

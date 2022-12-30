@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { CfUserRatingItem } from '../../../model/CfUserRatingItem';
 import { CodeforcesStaticService } from '../../../services/codeforces-static.service';
 
@@ -9,8 +9,8 @@ import { CodeforcesStaticService } from '../../../services/codeforces-static.ser
   templateUrl: './user-rating.component.html',
   styleUrls: ['./user-rating.component.css'],
 })
-export class UserRatingComponent implements OnInit {
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+export class UserRatingComponent {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   dataSource$: MatTableDataSource<CfUserRatingItem>;
   displayedColumns = [
@@ -36,7 +36,7 @@ export class UserRatingComponent implements OnInit {
     return this.userRatingListPrivate;
   }
 
-  calcColor(r: number): string{
+  calcColor(r: number): string {
     const COLORS = CodeforcesStaticService.getColors();
     for (const i in COLORS) {
       if (r < COLORS[i].scoreHigh) {
@@ -44,8 +44,5 @@ export class UserRatingComponent implements OnInit {
       }
     }
     return '#000000';
-  }
-
-  ngOnInit(): void {
   }
 }

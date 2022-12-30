@@ -16,8 +16,8 @@
 </table>
 
 <mat-card>
-  <h1>Unsolved problems</h1>
-  <mat-chip-listbox aria-label="Fish selection">
+  <h1 style="padding-left: 10px">Unsolved problems</h1>
+  <mat-chip-listbox aria-label="submitted but unsolved" style="padding: 10px;">
     <mat-chip-option *ngFor="let item of unsolved">
       <a [href]="item.url">
         {{ item.name }}
