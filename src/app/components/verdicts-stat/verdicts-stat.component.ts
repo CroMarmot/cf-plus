@@ -1,7 +1,12 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {EChartOption, ECharts} from 'echarts';
-import {combineLatest, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  EChartsOption,
+  ECharts,
+  LegendComponentOption,
+  SeriesOption,
+} from 'echarts';
+import { combineLatest, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 interface VerdictMap {
   verdict: string;
@@ -10,24 +15,23 @@ interface VerdictMap {
 @Component({
   selector: 'app-verdicts-stat',
   templateUrl: './verdicts-stat.component.html',
-  styleUrls: ['./verdicts-stat.component.less']
+  styleUrls: ['./verdicts-stat.component.less'],
 })
 export class VerdictsStatComponent implements OnInit, OnDestroy {
-
   // track the page life
   private destroyed$ = new Subject<void>();
 
   userStatus$ = new Subject<VerdictMap[]>();
   eChartInstance$ = new Subject<ECharts>();
 
-  chartOption: EChartOption = {
+  chartOption: EChartsOption = {
     title: {
       text: 'Verdicts',
-      left: 'center'
+      left: 'center',
     },
     tooltip: {
       trigger: 'item',
-      formatter: '{a} <br/>{b} : {c} ({d}%)'
+      formatter: '{a} <br/>{b} : {c} ({d}%)',
     },
     legend: {
       type: 'scroll',
@@ -35,7 +39,7 @@ export class VerdictsStatComponent implements OnInit, OnDestroy {
       right: 10,
       top: 20,
       bottom: 20,
-      data: []
+      data: [],
     },
     series: [
       {
@@ -48,11 +52,11 @@ export class VerdictsStatComponent implements OnInit, OnDestroy {
           itemStyle: {
             shadowBlur: 10,
             shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
-        }
-      }
-    ]
+            shadowColor: 'rgba(0, 0, 0, 0.5)',
+          },
+        },
+      },
+    ],
   };
 
   @Input() set userStatusResult(result: VerdictMap[]) {
@@ -61,8 +65,7 @@ export class VerdictsStatComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
     combineLatest([this.userStatus$, this.eChartInstance$])
@@ -85,22 +88,24 @@ export class VerdictsStatComponent implements OnInit, OnDestroy {
     // if (result.length === 0) {
     //   return;
     // }
-    const verdicts: { [key: string]: number; } = {};
+    const verdicts: { [key: string]: number } = {};
     for (const item of Object.values(result)) {
       if (typeof verdicts[item.verdict] === 'undefined') {
         verdicts[item.verdict] = 0;
       }
       verdicts[item.verdict]++;
     }
-    const verdictsDataList: { name: string, value: number }[] = [];
+    const verdictsDataList: { name: string; value: number }[] = [];
     for (const [name, value] of Object.entries(verdicts)) {
-      verdictsDataList.push({name, value});
+      verdictsDataList.push({ name, value });
     }
     verdictsDataList.sort((v0, v1) => v1.value - v0.value);
-    const chartOption: EChartOption = this.chartOption;
-    (chartOption.legend as EChartOption.Legend).data = verdictsDataList.map(v => v.name);
-    (chartOption.series as EChartOption.SeriesPie)[0].data = verdictsDataList;
+    const chartOption: EChartsOption = this.chartOption;
+    (chartOption.legend as LegendComponentOption).data = verdictsDataList.map(
+      (v) => v.name
+    );
+    (chartOption.series as SeriesOption[])[0].data = verdictsDataList;
 
-    eChartIns.setOption(chartOption);
+    eChartIns.setOption(chartOption as any); // TODO
   }
 }

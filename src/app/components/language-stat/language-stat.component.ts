@@ -1,7 +1,7 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {EChartOption, ECharts} from 'echarts';
-import {combineLatest, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { EChartsOption, ECharts, LegendComponentOption } from 'echarts';
+import { combineLatest, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 interface LanguageMap {
   programmingLanguage: string;
@@ -10,7 +10,7 @@ interface LanguageMap {
 @Component({
   selector: 'app-language-stat',
   templateUrl: './language-stat.component.html',
-  styleUrls: ['./language-stat.component.less']
+  styleUrls: ['./language-stat.component.less'],
 })
 export class LanguageStatComponent implements OnInit, OnDestroy {
   // track the page life
@@ -19,14 +19,14 @@ export class LanguageStatComponent implements OnInit, OnDestroy {
   userStatus$ = new Subject<LanguageMap[]>();
   eChartInstance$ = new Subject<ECharts>();
 
-  chartOption: EChartOption = {
+  chartOption: EChartsOption = {
     title: {
       text: 'Languages',
-      left: 'center'
+      left: 'center',
     },
     tooltip: {
       trigger: 'item',
-      formatter: '{a} <br/>{b} : {c} ({d}%)'
+      formatter: '{a} <br/>{b} : {c} ({d}%)',
     },
     legend: {
       type: 'scroll',
@@ -34,7 +34,7 @@ export class LanguageStatComponent implements OnInit, OnDestroy {
       right: 10,
       top: 20,
       bottom: 20,
-      data: []
+      data: [],
     },
     series: [
       {
@@ -47,11 +47,11 @@ export class LanguageStatComponent implements OnInit, OnDestroy {
           itemStyle: {
             shadowBlur: 10,
             shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
-        }
-      }
-    ]
+            shadowColor: 'rgba(0, 0, 0, 0.5)',
+          },
+        },
+      },
+    ],
   };
 
   @Input() set userStatusResult(result: LanguageMap[]) {
@@ -60,8 +60,7 @@ export class LanguageStatComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
     combineLatest([this.userStatus$, this.eChartInstance$])
@@ -84,23 +83,24 @@ export class LanguageStatComponent implements OnInit, OnDestroy {
     // if (result.length === 0) {
     //   return;
     // }
-    const languages: { [key: string]: number; } = {};
+    const languages: { [key: string]: number } = {};
     for (const item of Object.values(result)) {
       if (typeof languages[item.programmingLanguage] === 'undefined') {
         languages[item.programmingLanguage] = 0;
       }
       languages[item.programmingLanguage]++;
     }
-    const languagesDataList: { name: string, value: number }[] = [];
+    const languagesDataList: { name: string; value: number }[] = [];
     for (const [name, value] of Object.entries(languages)) {
-      languagesDataList.push({name, value});
+      languagesDataList.push({ name, value });
     }
     languagesDataList.sort((v0, v1) => v1.value - v0.value);
-    const chartOption: EChartOption = this.chartOption;
-    (chartOption.legend as EChartOption.Legend).data = languagesDataList.map(v => v.name);
-    (chartOption.series as EChartOption.SeriesPie)[0].data = languagesDataList;
+    const chartOption: EChartsOption = this.chartOption;
+    (chartOption.legend as LegendComponentOption).data = languagesDataList.map(
+      (v) => v.name
+    );
+    chartOption.series[0].data = languagesDataList;
 
-    eChartIns.setOption(chartOption);
+    eChartIns.setOption(chartOption as any); // TODO
   }
-
 }

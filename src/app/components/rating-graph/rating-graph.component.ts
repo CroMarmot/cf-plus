@@ -1,9 +1,14 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {CodeforcesStaticService} from '../../../services/codeforces-static.service';
-import {EChartOption, ECharts} from 'echarts';
-import {CfUserRatingItem} from '../../../model/CfUserRatingItem';
-import {combineLatest, from, of, Subject} from 'rxjs';
-import {map, switchMap, takeUntil, tap} from 'rxjs/operators';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { CodeforcesStaticService } from '../../../services/codeforces-static.service';
+import {
+  EChartsOption,
+  ECharts,
+  SeriesOption,
+  XAXisComponentOption,
+} from 'echarts';
+import { CfUserRatingItem } from '../../../model/CfUserRatingItem';
+import { combineLatest, from, of, Subject } from 'rxjs';
+import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 const COLORS = CodeforcesStaticService.getColors();
 
@@ -19,7 +24,7 @@ export class RatingGraphComponent implements OnInit, OnDestroy {
   ratingGraphResult$ = new Subject<CfUserRatingItem[]>();
   eChartInstance$ = new Subject<ECharts>();
 
-  chartOption: EChartOption = {
+  chartOption: EChartsOption = {
     tooltip: {
       trigger: 'axis',
       axisPointer: {
@@ -42,15 +47,13 @@ export class RatingGraphComponent implements OnInit, OnDestroy {
     ],
   };
 
-
   @Input() set userRatingList(value: CfUserRatingItem[]) {
     if (typeof value !== 'undefined') {
       this.ratingGraphResult$.next(value);
     }
   }
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
     const vMap = {
@@ -70,11 +73,15 @@ export class RatingGraphComponent implements OnInit, OnDestroy {
     combineLatest([this.ratingGraphResult$, this.eChartInstance$])
       .pipe(
         takeUntil(this.destroyed$),
-        switchMap(([result, eChartIns]) => of(this.updateRatingGraph(result, eChartIns))),
+        switchMap(([result, eChartIns]) =>
+          of(this.updateRatingGraph(result, eChartIns))
+        )
       )
-      .subscribe(({ins, options}: { ins: ECharts, options: EChartOption }) => {
-        ins.setOption(options);
-      });
+      .subscribe(
+        ({ ins, options }: { ins: ECharts; options: EChartsOption }) => {
+          ins.setOption(options);
+        }
+      );
   }
 
   ngOnDestroy(): void {
@@ -86,19 +93,22 @@ export class RatingGraphComponent implements OnInit, OnDestroy {
     this.eChartInstance$.next(eChartsIns);
   }
 
-  updateRatingGraph(result: CfUserRatingItem[], eChartsIns: ECharts): { ins: ECharts, options: EChartOption } {
-    const chartOption: EChartOption = this.chartOption;
+  updateRatingGraph(
+    result: CfUserRatingItem[],
+    eChartsIns: ECharts
+  ): { ins: ECharts; options: EChartsOption } {
+    const chartOption: EChartsOption = this.chartOption;
     const xAxisData = [];
     result.forEach((value, index) => {
       return xAxisData.push(index);
     });
-    (chartOption.xAxis as EChartOption.XAxis).data = xAxisData;
+    (chartOption.xAxis as any).data = xAxisData; // TODO fix
 
     const seriesData: number[] = [];
     result.forEach((v) => {
       seriesData.push(v.newRating);
     });
-    (chartOption.series as EChartOption.SeriesLines)[0].data = seriesData;
-    return {ins: eChartsIns, options: chartOption};
+    (chartOption.series as SeriesOption[])[0].data = seriesData;
+    return { ins: eChartsIns, options: chartOption };
   }
 }
