@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CodeforcesApiService } from '../../services/codeforces-api.service';
 import { UntypedFormControl, Validators } from '@angular/forms';
-import { filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { ReplaySubject, Subject } from 'rxjs';
 import { year2startend } from '../utils/year2startend';
 import { FetchStat } from '../components/fetching-stat/FetchStat';

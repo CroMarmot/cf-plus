@@ -4,7 +4,6 @@ import {
   EChartsOption,
   ECharts,
   SeriesOption,
-  XAXisComponentOption,
 } from 'echarts';
 import { CfUserRatingItem } from '../../../model/CfUserRatingItem';
 import { combineLatest, from, of, Subject } from 'rxjs';

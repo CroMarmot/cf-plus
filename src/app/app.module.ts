@@ -10,7 +10,6 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppMaterialModule } from './app-material/app-material.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { NgxEchartsModule } from 'ngx-echarts';
 import { ReportComponent } from './report/report.component';
 import { RatingGraphComponent } from './components/rating-graph/rating-graph.component';
 import { UserRatingComponent } from './components/user-rating/user-rating.component';
@@ -24,6 +23,33 @@ import { FetchingStatComponent } from './components/fetching-stat/fetching-stat.
 import { MainPageComponent } from './main-page/main-page.component';
 import { SharePageComponent } from './share-page/share-page.component';
 import { YearStatComponent } from './components/year-stat/year-stat.component';
+
+import { NgxEchartsModule } from 'ngx-echarts';
+// Import the echarts core module, which provides the necessary interfaces for using echarts.
+import * as echarts from 'echarts/core';
+// Import bar charts, all with Chart suffix
+import { BarChart, LineChart, PieChart } from 'echarts/charts';
+import {
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  VisualMapComponent,
+} from 'echarts/components';
+// Import the Canvas renderer, note that introducing the CanvasRenderer or SVGRenderer is a required step
+import { CanvasRenderer } from 'echarts/renderers';
+// import 'echarts/theme/macarons.js';
+
+// https://github.com/xieziyu/ngx-echarts#treeshaking-custom-build
+echarts.use([
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  VisualMapComponent,
+  BarChart,
+  PieChart,
+  LineChart,
+  CanvasRenderer,
+]);
 
 @NgModule({
   declarations: [
@@ -48,9 +74,7 @@ import { YearStatComponent } from './components/year-stat/year-stat.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxEchartsModule.forRoot({
-      echarts: () => import('echarts'),
-    }),
+    NgxEchartsModule.forRoot({ echarts }),
     AppMaterialModule,
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
