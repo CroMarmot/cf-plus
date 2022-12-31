@@ -1,7 +1,9 @@
 <div>
   <span> {{ hint }} </span>
-  <span> {{ contest.contestId }} </span>
-  <span> {{ contest.contestName }} </span>
-  rating: <span> {{ contest.oldRating }} </span> ->
-  <span> {{ contest.newRating }} </span>
+  <a href="https://codeforces.com/contest/{{ contest.contestId }}/">
+    <!-- <span> {{ contest.contestId }} </span> -->
+    <span> {{ contest.contestName }} </span>
+    <!-- rating: <span> {{ contest.oldRating }} </span> ->
+    <span> {{ contest.newRating }} </span> -->
+  </a>
 </div>

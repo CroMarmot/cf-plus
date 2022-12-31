@@ -11,9 +11,14 @@ import {
   filterYear as userRatingFilterYear,
 } from 'src/app/utils/user-rating';
 import {
-  acCount,
+  analyzeAcIndex,
+  analyzeAcRating,
+  analyzeAcTags,
+  analyzeLanguage,
   analyzeProblem,
+  analyzeVerdict,
   contestCount,
+  FieldCountAnalyzeResult,
   participantTypeString,
   userStatusFilterParticipantType,
   userStatusFilterYear,
@@ -60,14 +65,23 @@ export class SharePageComponent implements OnInit, OnDestroy {
     contestCount: 0,
     submissionCount: 0,
     ACCount: 0,
+    oneSubmissionSolved: 0,
     maxAttemptAC: [] as ProblemAnalyzeResult[],
     fastAC: [] as ProblemAnalyzeResult[],
     latestAC: [] as ProblemAnalyzeResult[],
     hardestAC: [] as ProblemAnalyzeResult[],
+    unsolved: [] as ProblemAnalyzeResult[],
+
     rankHigh: [] as CfUserRatingItem[],
     rankLow: [] as CfUserRatingItem[],
     ratingMaxInc: [] as CfUserRatingItem[],
     ratingMaxDec: [] as CfUserRatingItem[],
+
+    verdict: [] as FieldCountAnalyzeResult[],
+    acTags: [] as FieldCountAnalyzeResult[],
+    firstAcLanguage: [] as FieldCountAnalyzeResult[],
+    acRating: [] as FieldCountAnalyzeResult[],
+    acIndex: [] as FieldCountAnalyzeResult[],
   };
 
   constructor(
@@ -151,8 +165,12 @@ export class SharePageComponent implements OnInit, OnDestroy {
         tap(console.log),
         tap((l: CfUserRatingItem[]) => {
           this.view.ratingChange = ratingChange(l);
-          this.view.rankHigh = l.sort((a, b) => a.rank - b.rank).slice(0, 3);
-          this.view.rankLow = l.sort((a, b) => b.rank - a.rank).slice(0, 3);
+          this.view.rankHigh = [...l]
+            .sort((a, b) => a.rank - b.rank)
+            .slice(0, 3); // don't change originial array
+          this.view.rankLow = [...l]
+            .sort((a, b) => b.rank - a.rank)
+            .slice(0, 3);
           this.view.ratingMaxInc = l
             .filter((o) => o.newRating - o.oldRating >= 0)
             .sort(
@@ -175,8 +193,11 @@ export class SharePageComponent implements OnInit, OnDestroy {
         tap((l) => {
           this.view.contestCount = contestCount(l);
           this.view.submissionCount = l.length;
-          this.view.ACCount = acCount(l);
           const problemAnalyze = analyzeProblem(l);
+          this.view.ACCount = problemAnalyze.filter((o) => o.ac).length;
+          this.view.oneSubmissionSolved = problemAnalyze.filter(
+            (o) => o.ac && o.attempt == 1
+          ).length;
           let maxAttempt = 0;
           problemAnalyze.forEach((o) => {
             if (o.ac) maxAttempt = Math.max(maxAttempt, o.attempt);
@@ -199,6 +220,14 @@ export class SharePageComponent implements OnInit, OnDestroy {
             .filter((o) => o.rating != 0)
             .sort((a, b) => b.rating - a.rating)
             .slice(0, 3);
+
+          this.view.unsolved = problemAnalyze.filter((o) => !o.ac);
+
+          this.view.verdict = analyzeVerdict(l);
+          this.view.acTags = analyzeAcTags(l);
+          this.view.firstAcLanguage = analyzeLanguage(l);
+          this.view.acRating = analyzeAcRating(l);
+          this.view.acIndex = analyzeAcIndex(l);
         })
       )
       .subscribe();

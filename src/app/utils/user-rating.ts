@@ -4,7 +4,7 @@ export function filterYear(
   l: CfUserRatingItem[],
   year: string
 ): CfUserRatingItem[] {
-  if (!year) return l;
+  if (!year) return [...l]; // make copy don't return self
   const y = Number(year);
   if (!(y >= 2000 && y <= 2100)) throw new Error('Wrong year');
   const start = new Date(`${y}-01-01`).getTime();

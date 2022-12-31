@@ -1,6 +1,12 @@
 <div>
   <span>{{ hint }} </span>
-  <span>{{ problem.contestId }} </span>
-  <span>{{ problem.index }} </span>
-  <span>{{ problem.name }} </span>
+  <a
+    href="https://codeforces.com/contest/{{ problem.contestId }}/problem/{{
+      problem.index
+    }}"
+  >
+    <!-- <span>{{ problem.contestId }} </span> -->
+    <!-- <span>{{ problem.index }} </span> -->
+    <span>{{ problem.name }} </span>
+  </a>
 </div>

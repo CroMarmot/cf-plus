@@ -15,7 +15,7 @@ export class YearStatComponent implements OnInit {
   yearsResult: YearData[] = [];
 
   @Input() set userStatusResult(result: Submission[]) {
-    if (typeof result !== 'undefined') {
+    if (result) {
       this.userData$.next(result);
     }
   }

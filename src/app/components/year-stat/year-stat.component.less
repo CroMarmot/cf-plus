@@ -1,6 +1,11 @@
+@media screen and (min-width: 900px) {
+  .statistics-container {
+    min-width: 900px;
+  }
+}
+
 .statistics-container {
   display: flex;
-  min-width: 900px; // ((Math.round(365/7)+4)*15px)
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -20,11 +25,10 @@
     box-sizing: border-box;
     flex-direction: column;
     padding: 10px;
-    margin: 15px;
 
     .ui-year-data {
       display: flex;
-      height: 105px; // (14+1)*7
+      // height: 105px; // (14+1)*7
       position: relative;
       box-sizing: border-box;
       flex-direction: row;
@@ -33,11 +37,20 @@
         display: inline-flex;
         flex-direction: column;
 
+
         .ui-day {
           display: inline-flex;
-          width: 14px;
-          height: 14px;
-          margin: 1px;
+
+          width: .8rem;
+          height: .8rem;
+          margin: .08rem;
+
+          @media screen and (max-width:500px) {
+            width: .3rem;
+            height: .3rem;
+            margin: 0.03rem;
+            // margin: .03rem;
+          }
 
           .ui-square {
             display: inline-flex;

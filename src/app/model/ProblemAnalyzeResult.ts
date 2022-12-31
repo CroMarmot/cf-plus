@@ -1,10 +1,13 @@
 export type ProblemAnalyzeResult = {
-  attempt: number;
+  attempt: number; // count
   ac: boolean;
-  submit: number;
-  actime: number;
+  submit: number; // count
+  actime: number; // seconds
+  // from problem field
   contestId: number;
   index: string;
   rating: number;
   name: string;
+  tags: string[];
+  firstAcLanguage: string;
 };

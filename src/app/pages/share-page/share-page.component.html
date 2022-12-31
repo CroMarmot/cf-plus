@@ -1,97 +1,217 @@
 <!-- use https://angular.cn/guide/reactive-forms#grouping-form-controls -->
-<form [formGroup]="queryForm">
-  <label for="handle">handle: </label>
-  <input id="handle" type="text" formControlName="handle" />
+<div class="ui-page">
+  <div class="ui-content">
+    <form [formGroup]="queryForm" class="ui-form">
+      <span>
+        <label for="handle">handle: </label>
+        <input id="handle" type="text" formControlName="handle" />
+      </span>
+      <span>
+        <label for="year">year: </label>
+        <select id="year" name="year" formControlName="year">
+          <option value="">All</option>
+          <option *ngFor="let year of yearList" [ngValue]="year">
+            {{ year }}
+          </option>
+        </select>
+      </span>
+      <span>
+        <label for="participantType">participantType: </label>
+        <select
+          id="participantType"
+          name="participantType"
+          formControlName="participantType"
+        >
+          <option value="">All</option>
+          <option *ngFor="let pt of participantTypeList" [ngValue]="pt">
+            {{ pt }}
+          </option>
+        </select>
+      </span>
+      <button (click)="goButtonClick()">Go</button>
+    </form>
 
-  <label for="year">year: </label>
-  <select id="year" name="year" formControlName="year">
-    <option value="">All</option>
-    <option *ngFor="let year of yearList" [ngValue]="year">
-      {{ year }}
-    </option>
-  </select>
+    <!-- <p>{{ queryForm.value | json }}</p> -->
 
-  <label for="participantType">participantType: </label>
-  <select
-    id="participantType"
-    name="participantType"
-    formControlName="participantType"
-  >
-    <option value="">All</option>
-    <option *ngFor="let pt of participantTypeList" [ngValue]="pt">
-      {{ pt }}
-    </option>
-  </select>
-  <button (click)="goButtonClick()">Go</button>
-</form>
+    <app-year-stat
+      [userStatusResult]="userStatusFiltered$ | async"
+    ></app-year-stat>
 
-<!-- <p>{{ queryForm.value | json }}</p> -->
+    <table>
+      <tbody>
+        <tr>
+          <th>Rating change</th>
+          <td>{{ view.ratingChange }}</td>
+        </tr>
+        <tr>
+          <th>Contest count</th>
+          <td>{{ view.contestCount }}</td>
+        </tr>
+        <tr>
+          <th>Submissions</th>
+          <td>{{ view.submissionCount }}</td>
+        </tr>
+        <tr>
+          <th>Solved</th>
+          <td>{{ view.ACCount }}</td>
+        </tr>
+        <tr>
+          <th>One submission solved</th>
+          <td>
+            {{ view.oneSubmissionSolved }}
+            <span *ngIf="view.ACCount"
+              >({{
+                ((100 * view.oneSubmissionSolved) / view.ACCount).toFixed(2)
+              }}%)</span
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Max attempt till AC</h2>
+    <app-problem-report-card
+      *ngFor="let p of view.fastAC"
+      [problem]="p"
+      [hint]="'' + p.actime + 's'"
+    ></app-problem-report-card>
+    <h2>Fast AC</h2>
+    <app-problem-report-card
+      *ngFor="let p of view.fastAC"
+      [problem]="p"
+      [hint]="'' + p.actime + 's'"
+    ></app-problem-report-card>
+    <h2>Latest AC</h2>
+    <app-problem-report-card
+      *ngFor="let p of view.latestAC"
+      [problem]="p"
+      [hint]="'' + p.actime + 's'"
+    ></app-problem-report-card>
+    <h2>Hardest problem (AC)</h2>
+    <app-problem-report-card
+      *ngFor="let p of view.hardestAC"
+      [problem]="p"
+      [hint]="'rating:' + p.rating"
+    ></app-problem-report-card>
+    <h2>Unsolved problems</h2>
+    <app-problem-report-card
+      *ngFor="let p of view.unsolved"
+      [problem]="p"
+      [hint]="'submit:' + p.submit"
+    ></app-problem-report-card>
 
-<h2>rating change: {{ view.ratingChange }}</h2>
-
-<h2>contest count {{ view.contestCount }}</h2>
-<h2>submission count {{ view.submissionCount }}</h2>
-<h2>problem ac count {{ view.ACCount }}</h2>
-<h2>max attempt till ac</h2>
-<app-problem-report-card
-  *ngFor="let p of view.fastAC"
-  [problem]="p"
-  [hint]="'' + p.actime + 's'"
-></app-problem-report-card>
-<h2>fast ac</h2>
-<app-problem-report-card
-  *ngFor="let p of view.fastAC"
-  [problem]="p"
-  [hint]="'' + p.actime + 's'"
-></app-problem-report-card>
-<h2>latest ac</h2>
-<app-problem-report-card
-  *ngFor="let p of view.latestAC"
-  [problem]="p"
-  [hint]="'' + p.actime + 's'"
-></app-problem-report-card>
-<h2>hardest problem rating ac</h2>
-<app-problem-report-card
-  *ngFor="let p of view.hardestAC"
-  [problem]="p"
-  [hint]="'rating:' + p.rating"
-></app-problem-report-card>
-<h2>high rank</h2>
-<app-contest-report-card
-  *ngFor="let c of view.rankHigh"
-  [contest]="c"
-  [hint]="'rank:' + c.rank"
->
-</app-contest-report-card>
-<h2>low rank</h2>
-<app-contest-report-card
-  *ngFor="let c of view.rankLow"
-  [contest]="c"
-  [hint]="'rank:' + c.rank"
->
-</app-contest-report-card>
-<h2>high rating inc</h2>
-<app-contest-report-card
-  *ngFor="let c of view.ratingMaxInc"
-  [contest]="c"
-  [hint]="'ratingChange:' + (c.newRating - c.oldRating)"
->
-</app-contest-report-card>
-<h2>high rating dec</h2>
-<app-contest-report-card
-  *ngFor="let c of view.ratingMaxDec"
-  [contest]="c"
-  [hint]="'ratingChange:' + (c.newRating - c.oldRating)"
->
-</app-contest-report-card>
-<h2>verdict( ok, tle, wa, count)</h2>
-<h2>tag(first ac greedy implement)</h2>
-<h2>submit languages(first AC)</h2>
-<h2>failed system test</h2>
-<h2>hack lose ac</h2>
-<h2>div1/2/3 ( a,b,c,d,e,f ac)</h2>
-<h2>div1+2+3 ( score )</h2>
-<h2>solved with one submission</h2>
-<h2>avg ac, (submit till ac/ ac)</h2>
-<h2>年月日活跃图</h2>
-<h2>unsolved problems</h2>
+    <h2>high rank</h2>
+    <app-contest-report-card
+      *ngFor="let c of view.rankHigh"
+      [contest]="c"
+      [hint]="'rank:' + c.rank"
+    >
+    </app-contest-report-card>
+    <h2>low rank</h2>
+    <app-contest-report-card
+      *ngFor="let c of view.rankLow"
+      [contest]="c"
+      [hint]="'rank:' + c.rank"
+    >
+    </app-contest-report-card>
+    <h2>high rating inc</h2>
+    <app-contest-report-card
+      *ngFor="let c of view.ratingMaxInc"
+      [contest]="c"
+      [hint]="'change:' + (c.newRating - c.oldRating)"
+    >
+    </app-contest-report-card>
+    <h2>high rating dec</h2>
+    <app-contest-report-card
+      *ngFor="let c of view.ratingMaxDec"
+      [contest]="c"
+      [hint]="'ratingChange:' + (c.newRating - c.oldRating)"
+    >
+    </app-contest-report-card>
+    <table>
+      <caption>
+        <h2>Verdict</h2>
+      </caption>
+      <tbody>
+        <tr>
+          <th>verdict</th>
+          <th>count</th>
+        </tr>
+        <tr *ngFor="let o of view.verdict">
+          <td>{{ o.name }}</td>
+          <td>{{ o.count }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <table>
+      <caption>
+        <h2>Tag(First AC)</h2>
+      </caption>
+      <tbody>
+        <tr>
+          <th>tag</th>
+          <th>count</th>
+        </tr>
+        <tr *ngFor="let o of view.acTags">
+          <td>{{ o.name }}</td>
+          <td>{{ o.count }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <table>
+      <caption>
+        <h2>Language(First AC)</h2>
+      </caption>
+      <tbody>
+        <tr>
+          <th>language</th>
+          <th>count</th>
+        </tr>
+        <tr *ngFor="let o of view.firstAcLanguage">
+          <td>{{ o.name }}</td>
+          <td>{{ o.count }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <table>
+      <caption>
+        <h2>Problem Rating(First AC)</h2>
+      </caption>
+      <tbody>
+        <tr>
+          <th>rating</th>
+          <th>count</th>
+        </tr>
+        <tr *ngFor="let o of view.acRating">
+          <td>{{ o.name }}</td>
+          <td>{{ o.count }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <table>
+      <caption>
+        <h2>Problem Index(First AC)</h2>
+      </caption>
+      <tbody>
+        <tr>
+          <th>index</th>
+          <th>count</th>
+        </tr>
+        <tr *ngFor="let o of view.acIndex">
+          <td>{{ o.name }}</td>
+          <td>{{ o.count }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <!--<h2>failed system test</h2>-->
+    <!--<h2>hack lose ac</h2>-->
+    <div class="modern">
+      <button
+        mat-flat-button
+        routerLink="/annual"
+        queryParamsHandling="preserve"
+      >
+        Modern UI
+      </button>
+    </div>
+  </div>
+</div>
