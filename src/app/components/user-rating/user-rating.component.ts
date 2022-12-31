@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { CfUserRatingItem } from '../../../model/CfUserRatingItem';
-import { CodeforcesStaticService } from '../../../services/codeforces-static.service';
+import { CfUserRatingItem } from 'src/app/model/CfUserRatingItem';
+import { CodeforcesStaticService } from 'src/app/services/codeforces-static.service';
 
 @Component({
   selector: 'app-user-rating',

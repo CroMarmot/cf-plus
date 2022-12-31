@@ -1,21 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { ReportComponent } from './report/report.component';
-import { MainPageComponent } from './main-page/main-page.component';
-import { SharePageComponent } from './share-page/share-page.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { ReportComponent } from './pages/report/report.component';
+import { MainPageComponent } from './pages/main-page/main-page.component';
+import { SharePageComponent } from './pages/share-page/share-page.component';
 
 const routes: Routes = [
   {
     path: '',
     component: MainPageComponent,
-    children: [
-      { path: 'annual', component: ReportComponent },
-      { path: '', redirectTo: '/annual', pathMatch: 'full' },
-    ],
+    children: [{ path: 'annual', component: ReportComponent }],
   },
   { path: 'share', component: SharePageComponent },
-  { path: '', redirectTo: '/annual', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
 

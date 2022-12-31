@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { BehaviorSubject, ReplaySubject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { Date2GR, YearData } from 'src/app/model/models';
+import { Submission } from 'src/app/model/Submission';
 import { intDiv, nextDayNumber, timestamp2number } from 'src/app/utils/utils';
-import { Date2GR, YearData } from 'src/model/models';
-import { Submission } from "src/model/Submission";
 
 @Component({
   selector: 'app-year-stat',
@@ -19,7 +19,6 @@ export class YearStatComponent implements OnInit {
       this.userData$.next(result);
     }
   }
-  constructor() {}
 
   ngOnInit(): void {
     this.userData$

@@ -1,13 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { CodeforcesStaticService } from '../../../services/codeforces-static.service';
-import {
-  EChartsOption,
-  ECharts,
-  SeriesOption,
-} from 'echarts';
-import { CfUserRatingItem } from '../../../model/CfUserRatingItem';
-import { combineLatest, from, of, Subject } from 'rxjs';
-import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { EChartsOption, ECharts, SeriesOption } from 'echarts';
+import { combineLatest, of, Subject } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
+import { CfUserRatingItem } from 'src/app/model/CfUserRatingItem';
+import { CodeforcesStaticService } from 'src/app/services/codeforces-static.service';
 
 const COLORS = CodeforcesStaticService.getColors();
 

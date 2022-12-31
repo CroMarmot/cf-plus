@@ -1,5 +1,4 @@
-import { throwIfEmpty } from 'rxjs/operators';
-import { intDiv } from '../app/utils/utils';
+import { intDiv } from '../utils/utils';
 
 export class Date2GR {
   public day: number;

@@ -7,9 +7,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppMaterialModule } from './app-material/app-material.module';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { ReportComponent } from './report/report.component';
+import { AppMaterialModule } from './modules/app-material.module';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { ReportComponent } from './pages/report/report.component';
 import { RatingGraphComponent } from './components/rating-graph/rating-graph.component';
 import { UserRatingComponent } from './components/user-rating/user-rating.component';
 import { VerdictsStatComponent } from './components/verdicts-stat/verdicts-stat.component';
@@ -19,8 +19,8 @@ import { LevelStatComponent } from './components/level-stat/level-stat.component
 import { RatingStatComponent } from './components/rating-stat/rating-stat.component';
 import { StatTableComponent } from './components/stat-table/stat-table.component';
 import { FetchingStatComponent } from './components/fetching-stat/fetching-stat.component';
-import { MainPageComponent } from './main-page/main-page.component';
-import { SharePageComponent } from './share-page/share-page.component';
+import { MainPageComponent } from './pages/main-page/main-page.component';
+import { SharePageComponent } from './pages/share-page/share-page.component';
 import { YearStatComponent } from './components/year-stat/year-stat.component';
 
 import { NgxEchartsModule } from 'ngx-echarts';
@@ -33,6 +33,7 @@ import {
   TooltipComponent,
   GridComponent,
   VisualMapComponent,
+  LegendComponent,
 } from 'echarts/components';
 // Import the Canvas renderer, note that introducing the CanvasRenderer or SVGRenderer is a required step
 import { CanvasRenderer } from 'echarts/renderers';
@@ -43,6 +44,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 echarts.use([
   TitleComponent,
   TooltipComponent,
+  LegendComponent,
   GridComponent,
   VisualMapComponent,
   BarChart,
