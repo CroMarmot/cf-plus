@@ -9,9 +9,12 @@ const routes: Routes = [
   {
     path: '',
     component: MainPageComponent,
-    children: [{ path: 'annual', component: ReportComponent }],
+    children: [
+      { path: 'annual', component: ReportComponent },
+    ],
   },
   { path: 'share', component: SharePageComponent },
+  { path: '', redirectTo: '/annual', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
 
