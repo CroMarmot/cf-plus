@@ -37,6 +37,8 @@ import {
 } from 'echarts/components';
 // Import the Canvas renderer, note that introducing the CanvasRenderer or SVGRenderer is a required step
 import { CanvasRenderer } from 'echarts/renderers';
+import { ProblemReportCardComponent } from './components/problem-report-card/problem-report-card.component';
+import { ContestReportCardComponent } from './components/contest-report-card/contest-report-card.component';
 // import 'echarts/theme/macarons.js';
 
 // https://github.com/xieziyu/ngx-echarts#treeshaking-custom-build
@@ -70,6 +72,8 @@ echarts.use([
     MainPageComponent,
     SharePageComponent,
     YearStatComponent,
+    ProblemReportCardComponent,
+    ContestReportCardComponent,
   ],
   imports: [
     BrowserModule,

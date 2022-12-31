@@ -1,4 +1,4 @@
-import { CfUserRatingItem } from './CfUserRatingItem';
+import { CfUserRatingItem } from '../CfUserRatingItem';
 import { Submission } from './Submission';
 
 export class UserStatusResp {

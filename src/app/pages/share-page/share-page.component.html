@@ -1,1 +1,97 @@
-<p>share-page works!</p>
+<!-- use https://angular.cn/guide/reactive-forms#grouping-form-controls -->
+<form [formGroup]="queryForm">
+  <label for="handle">handle: </label>
+  <input id="handle" type="text" formControlName="handle" />
+
+  <label for="year">year: </label>
+  <select id="year" name="year" formControlName="year">
+    <option value="">All</option>
+    <option *ngFor="let year of yearList" [ngValue]="year">
+      {{ year }}
+    </option>
+  </select>
+
+  <label for="participantType">participantType: </label>
+  <select
+    id="participantType"
+    name="participantType"
+    formControlName="participantType"
+  >
+    <option value="">All</option>
+    <option *ngFor="let pt of participantTypeList" [ngValue]="pt">
+      {{ pt }}
+    </option>
+  </select>
+  <button (click)="goButtonClick()">Go</button>
+</form>
+
+<!-- <p>{{ queryForm.value | json }}</p> -->
+
+<h2>rating change: {{ view.ratingChange }}</h2>
+
+<h2>contest count {{ view.contestCount }}</h2>
+<h2>submission count {{ view.submissionCount }}</h2>
+<h2>problem ac count {{ view.ACCount }}</h2>
+<h2>max attempt till ac</h2>
+<app-problem-report-card
+  *ngFor="let p of view.fastAC"
+  [problem]="p"
+  [hint]="'' + p.actime + 's'"
+></app-problem-report-card>
+<h2>fast ac</h2>
+<app-problem-report-card
+  *ngFor="let p of view.fastAC"
+  [problem]="p"
+  [hint]="'' + p.actime + 's'"
+></app-problem-report-card>
+<h2>latest ac</h2>
+<app-problem-report-card
+  *ngFor="let p of view.latestAC"
+  [problem]="p"
+  [hint]="'' + p.actime + 's'"
+></app-problem-report-card>
+<h2>hardest problem rating ac</h2>
+<app-problem-report-card
+  *ngFor="let p of view.hardestAC"
+  [problem]="p"
+  [hint]="'rating:' + p.rating"
+></app-problem-report-card>
+<h2>high rank</h2>
+<app-contest-report-card
+  *ngFor="let c of view.rankHigh"
+  [contest]="c"
+  [hint]="'rank:' + c.rank"
+>
+</app-contest-report-card>
+<h2>low rank</h2>
+<app-contest-report-card
+  *ngFor="let c of view.rankLow"
+  [contest]="c"
+  [hint]="'rank:' + c.rank"
+>
+</app-contest-report-card>
+<h2>high rating inc</h2>
+<app-contest-report-card
+  *ngFor="let c of view.ratingMaxInc"
+  [contest]="c"
+  [hint]="'ratingChange:' + (c.newRating - c.oldRating)"
+>
+</app-contest-report-card>
+<h2>high rating dec</h2>
+<app-contest-report-card
+  *ngFor="let c of view.ratingMaxDec"
+  [contest]="c"
+  [hint]="'ratingChange:' + (c.newRating - c.oldRating)"
+>
+</app-contest-report-card>
+<h2>verdict( ok, tle, wa, count)</h2>
+<h2>tag(first ac greedy implement)</h2>
+<h2>submit languages(first AC)</h2>
+<h2>failed system test</h2>
+<h2>hack lose ac</h2>
+<h2>div1/2/3 ( a,b,c,d,e,f ac)</h2>
+<h2>div1+2+3 ( score )</h2>
+<h2>solved with one submission</h2>
+<h2>avg ac, (submit till ac/ ac)</h2>
+<h2>年月日活跃图</h2>
+<h2>unsolved problems</h2>

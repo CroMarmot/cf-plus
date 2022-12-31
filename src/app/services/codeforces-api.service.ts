@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserRatingResp, UserStatusResp } from '../model/response';
+import { UserRatingResp, UserStatusResp } from '../model/api/response';
 import { LSCacheTool } from '../utils/utils';
 // import UserStatus from './user.status.js';
 

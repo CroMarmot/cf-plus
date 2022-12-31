@@ -6,6 +6,7 @@ import { MainPageComponent } from './pages/main-page/main-page.component';
 import { SharePageComponent } from './pages/share-page/share-page.component';
 
 const routes: Routes = [
+  { path: 'share', component: SharePageComponent },
   {
     path: '',
     component: MainPageComponent,
@@ -13,7 +14,6 @@ const routes: Routes = [
       { path: 'annual', component: ReportComponent },
     ],
   },
-  { path: 'share', component: SharePageComponent },
   { path: '', redirectTo: '/annual', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];

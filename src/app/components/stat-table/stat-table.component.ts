@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
-import { Submission } from 'src/app/model/Submission';
+import { Submission } from 'src/app/model/api/Submission';
 
 @Component({
   selector: 'app-stat-table',

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Date2GR, YearData } from 'src/app/model/models';
-import { Submission } from 'src/app/model/Submission';
+import { Submission } from 'src/app/model/api/Submission';
 import { intDiv, nextDayNumber, timestamp2number } from 'src/app/utils/utils';
 
 @Component({

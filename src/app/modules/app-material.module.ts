@@ -77,7 +77,7 @@ import { DialogModule } from '@angular/cdk/dialog';
     // MatNativeDateModule,
     MatPaginatorModule,
     // MatProgressBarModule,
-    // MatProgressSpinnerModule,
+    MatProgressSpinnerModule,
     // MatRadioModule,
     // MatRippleModule,
     MatSelectModule,
