@@ -1,0 +1,83 @@
+{
+  "configVersion": 1,
+  "timestamp": 1672470034515,
+  "index": "/cf-plus/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/cf-plus/favicon.ico",
+        "/cf-plus/index.html",
+        "/cf-plus/main.js",
+        "/cf-plus/manifest.webmanifest",
+        "/cf-plus/polyfills.js",
+        "/cf-plus/runtime.js",
+        "/cf-plus/styles.css",
+        "/cf-plus/vendor.js"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/cf-plus/assets/icons/icon-128x128.png",
+        "/cf-plus/assets/icons/icon-144x144.png",
+        "/cf-plus/assets/icons/icon-152x152.png",
+        "/cf-plus/assets/icons/icon-192x192.png",
+        "/cf-plus/assets/icons/icon-384x384.png",
+        "/cf-plus/assets/icons/icon-512x512.png",
+        "/cf-plus/assets/icons/icon-72x72.png",
+        "/cf-plus/assets/icons/icon-96x96.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/cf-plus/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
+    "/cf-plus/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
+    "/cf-plus/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
+    "/cf-plus/assets/icons/icon-192x192.png": "1abd80d431a237a853ce38147d8c63752f10933b",
+    "/cf-plus/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
+    "/cf-plus/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
+    "/cf-plus/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
+    "/cf-plus/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
+    "/cf-plus/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
+    "/cf-plus/index.html": "df5f1faefc292e629174183bdc86d9b159a39157",
+    "/cf-plus/main.js": "f532f1d63978f95c69eb1a2909f3c5322cee3787",
+    "/cf-plus/manifest.webmanifest": "094ed1123bd83cc7d0344da7e54d6782bbbe9ec6",
+    "/cf-plus/polyfills.js": "afd15f784b3def3e8758302b27764ff9983f5371",
+    "/cf-plus/runtime.js": "3822dfcec3cdf65f87568d5eeac6921b63f14a40",
+    "/cf-plus/styles.css": "f2c8bb2f3aa6ac8acfe572d073073f878888ca7d",
+    "/cf-plus/vendor.js": "4df3f297ee83d07bb3bf2d3f11f6457507d90265"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
