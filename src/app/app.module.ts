@@ -40,6 +40,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 // import 'echarts/theme/macarons.js';
 
 // https://github.com/xieziyu/ngx-echarts#treeshaking-custom-build
+// https://echarts.apache.org/en/cheat-sheet.html
 echarts.use([
   TitleComponent,
   TooltipComponent,
