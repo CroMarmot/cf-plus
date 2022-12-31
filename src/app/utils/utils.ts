@@ -32,7 +32,8 @@ export class LSCacheTool<T> {
     this.prefix = localStoragePrefix;
   }
 
-  async Get(key: string, fallBack: () => Promise<T>): Promise<T> { // TODO add force refech
+  async Get(key: string, fallBack: () => Promise<T>): Promise<T> {
+    // TODO add force refech
     if (this.cachedData.has(key)) {
       return this.cachedData.get(key);
     }
@@ -51,7 +52,8 @@ export class LSCacheTool<T> {
     } catch (e) {
       console.error(e);
     }
-    if (result && now - timestamp < 60 * 60 * 1000) { // TODO 1 day
+    if (result && now - timestamp < 60 * 60 * 1000) {
+      // TODO 1 day
       // 1 hour
       this.cachedData.set(key, result);
       return result;
@@ -59,13 +61,18 @@ export class LSCacheTool<T> {
     // use callback
     result = await fallBack(); // may fail with exception
     this.cachedData.set(key, result);
-    localStorage.setItem(
-      lskey,
-      JSON.stringify({
-        timestamp: now,
-        result,
-      })
-    );
+    try {
+      // may more than 5mb, TODO split by month?
+      localStorage.setItem(
+        lskey,
+        JSON.stringify({
+          timestamp: now,
+          result,
+        })
+      );
+    } catch (e) {
+      console.error(e);
+    }
     return result;
   }
 }

@@ -31,7 +31,9 @@
       <button (click)="goButtonClick()">Go</button>
     </form>
 
-    <!-- <p>{{ queryForm.value | json }}</p> -->
+    <!-- TODO filter -->
+    <div>user.rating fetch status: {{ fetchStatString[ratingFetching] }}</div>
+    <div>user.status fetch status: {{ fetchStatString[statusFetching] }}</div>
 
     <app-year-stat
       [userStatusResult]="userStatusFiltered$ | async"
@@ -68,65 +70,83 @@
         </tr>
       </tbody>
     </table>
-    <h2>Max attempt till AC</h2>
-    <app-problem-report-card
-      *ngFor="let p of view.fastAC"
-      [problem]="p"
-      [hint]="'' + p.actime + 's'"
-    ></app-problem-report-card>
-    <h2>Fast AC</h2>
-    <app-problem-report-card
-      *ngFor="let p of view.fastAC"
-      [problem]="p"
-      [hint]="'' + p.actime + 's'"
-    ></app-problem-report-card>
-    <h2>Latest AC</h2>
-    <app-problem-report-card
-      *ngFor="let p of view.latestAC"
-      [problem]="p"
-      [hint]="'' + p.actime + 's'"
-    ></app-problem-report-card>
-    <h2>Hardest problem (AC)</h2>
-    <app-problem-report-card
-      *ngFor="let p of view.hardestAC"
-      [problem]="p"
-      [hint]="'rating:' + p.rating"
-    ></app-problem-report-card>
-    <h2>Unsolved problems</h2>
-    <app-problem-report-card
-      *ngFor="let p of view.unsolved"
-      [problem]="p"
-      [hint]="'submit:' + p.submit"
-    ></app-problem-report-card>
+    <ng-container *ngIf="view.maxAttemptAC.length">
+      <h2>Max attempt till AC</h2>
+      <app-problem-report-card
+        *ngFor="let p of view.maxAttemptAC"
+        [problem]="p"
+        hint="{{ p.attempt }} attempt "
+      ></app-problem-report-card>
+    </ng-container>
+    <ng-container *ngIf="view.fastAC.length">
+      <h2>Fast AC</h2>
+      <app-problem-report-card
+        *ngFor="let p of view.fastAC"
+        [problem]="p"
+        hint="{{ secondsToHHMMSS(p.actime) }} "
+      ></app-problem-report-card>
+    </ng-container>
+    <ng-container *ngIf="view.latestAC.length">
+      <h2>Latest AC</h2>
+      <app-problem-report-card
+        *ngFor="let p of view.latestAC"
+        [problem]="p"
+        hint="{{ secondsToHHMMSS(p.actime) }} "
+      ></app-problem-report-card>
+    </ng-container>
+    <ng-container *ngIf="view.hardestAC.length">
+      <h2>Hardest problem (AC)</h2>
+      <app-problem-report-card
+        *ngFor="let p of view.hardestAC"
+        [problem]="p"
+        [hint]="'rating:' + p.rating"
+      ></app-problem-report-card>
+    </ng-container>
+    <ng-container *ngIf="view.unsolved.length">
+      <h2>Unsolved problems</h2>
+      <app-problem-report-card
+        *ngFor="let p of view.unsolved"
+        [problem]="p"
+        hint="{{ p.submit }} submit "
+      ></app-problem-report-card>
+    </ng-container>
 
-    <h2>high rank</h2>
-    <app-contest-report-card
-      *ngFor="let c of view.rankHigh"
-      [contest]="c"
-      [hint]="'rank:' + c.rank"
-    >
-    </app-contest-report-card>
-    <h2>low rank</h2>
-    <app-contest-report-card
-      *ngFor="let c of view.rankLow"
-      [contest]="c"
-      [hint]="'rank:' + c.rank"
-    >
-    </app-contest-report-card>
-    <h2>high rating inc</h2>
-    <app-contest-report-card
-      *ngFor="let c of view.ratingMaxInc"
-      [contest]="c"
-      [hint]="'change:' + (c.newRating - c.oldRating)"
-    >
-    </app-contest-report-card>
-    <h2>high rating dec</h2>
-    <app-contest-report-card
-      *ngFor="let c of view.ratingMaxDec"
-      [contest]="c"
-      [hint]="'ratingChange:' + (c.newRating - c.oldRating)"
-    >
-    </app-contest-report-card>
+    <ng-container *ngIf="view.rankHigh.length">
+      <h2>high rank</h2>
+      <app-contest-report-card
+        *ngFor="let c of view.rankHigh"
+        [contest]="c"
+        [hint]="'rank:' + c.rank"
+      >
+      </app-contest-report-card>
+    </ng-container>
+    <ng-container *ngIf="view.rankLow.length">
+      <h2>low rank</h2>
+      <app-contest-report-card
+        *ngFor="let c of view.rankLow"
+        [contest]="c"
+        [hint]="'rank:' + c.rank"
+      >
+      </app-contest-report-card>
+    </ng-container>
+    <ng-container *ngIf="view.ratingMaxInc.length">
+      <h2>high rating inc</h2>
+      <app-contest-report-card
+        *ngFor="let c of view.ratingMaxInc"
+        [contest]="c"
+        [hint]="'change: ' + (c.newRating - c.oldRating)"
+      >
+      </app-contest-report-card>
+    </ng-container>
+    <ng-container *ngIf="view.ratingMaxDec.length">
+      <h2>high rating dec</h2>
+      <app-contest-report-card
+        *ngFor="let c of view.ratingMaxDec"
+        [contest]="c"
+        [hint]="'change: ' + (c.newRating - c.oldRating)"
+      >
+      </app-contest-report-card>
+    </ng-container>
     <table>
       <caption>
         <h2>Verdict</h2>

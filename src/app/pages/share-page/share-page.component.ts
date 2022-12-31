@@ -1,7 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ReplaySubject, Subject, switchMap, takeUntil, tap, zip } from 'rxjs';
+import {
+  map,
+  ReplaySubject,
+  Subject,
+  switchMap,
+  takeUntil,
+  tap,
+  zip,
+} from 'rxjs';
 import { FetchStat } from 'src/app/components/fetching-stat/FetchStat';
 import { CfUserRatingItem } from 'src/app/model/CfUserRatingItem';
 import { Submission } from 'src/app/model/api/Submission';
@@ -36,6 +44,17 @@ const participantTypeList = [
   'OUT_OF_COMPETITION',
 ];
 
+const fetchStatString = {
+  [FetchStat.Before]: 'Before',
+  [FetchStat.Fetching]: 'Fetching',
+  [FetchStat.Failed]: 'Failed',
+  [FetchStat.Success]: 'Success',
+};
+
+function secondsToHHMMSS(seconds: number): string {
+  return new Date(seconds * 1000).toISOString().slice(11, 19);
+}
+
 @Component({
   selector: 'app-share-page',
   templateUrl: './share-page.component.html',
@@ -52,7 +71,10 @@ export class SharePageComponent implements OnInit, OnDestroy {
     participantType: new FormControl(''),
   });
 
+  secondsToHHMMSS = secondsToHHMMSS;
+
   FetchStat = FetchStat;
+  fetchStatString = fetchStatString;
   ratingFetching: FetchStat = FetchStat.Before;
   statusFetching: FetchStat = FetchStat.Before;
 
@@ -121,30 +143,53 @@ export class SharePageComponent implements OnInit, OnDestroy {
 
     query$
       .pipe(
-        tap(() => (this.ratingFetching = FetchStat.Fetching)),
-        switchMap(
-          async ({ handle }) =>
-            await this.codeforcesApiService.getUserRating(handle)
-        ),
-        tap(() => (this.ratingFetching = FetchStat.Success)),
-        tap((r) => userRating$.next(r.result))
+        map(async ({ handle }) => {
+          try {
+            this.ratingFetching = FetchStat.Fetching;
+            const r = await this.codeforcesApiService.getUserRating(handle);
+            if (r.status == 'OK') {
+              this.ratingFetching = FetchStat.Success;
+              userRating$.next(r.result);
+            } else {
+              console.error(r);
+              this.ratingFetching = FetchStat.Failed;
+              userRating$.next([]);
+            }
+          } catch (e) {
+            console.error(e);
+            this.ratingFetching = FetchStat.Failed;
+            userRating$.next([]);
+          }
+        })
       )
       .subscribe();
 
     query$
       .pipe(
-        tap(() => (this.statusFetching = FetchStat.Fetching)),
-        switchMap(
-          async ({ handle }) =>
-            await this.codeforcesApiService.getUserStatus(handle)
-        ),
-        tap(() => (this.statusFetching = FetchStat.Success)),
-        tap((r) => userStatus$.next(r.result))
+        map(async ({ handle }) => {
+          try {
+            this.statusFetching = FetchStat.Fetching;
+            const r = await this.codeforcesApiService.getUserStatus(handle);
+            if (r.status == 'OK') {
+              this.statusFetching = FetchStat.Success;
+              userStatus$.next(r.result);
+            } else {
+              console.error(r);
+              this.statusFetching = FetchStat.Failed;
+              userStatus$.next([]);
+            }
+          } catch (e) {
+            console.error(e);
+            this.statusFetching = FetchStat.Failed;
+            userStatus$.next([]);
+          }
+        })
       )
       .subscribe();
 
     zip([query$, userRating$, userStatus$]).subscribe(
       ([{ year, participantType }, urating, ustatus]) => {
+        console.log(year, participantType, urating, ustatus);
         const ratingList = userRatingFilterYear(urating, year);
         this.userRatingFiltered$.next(ratingList);
         const ratedContestId = new Set<number>();
@@ -204,7 +249,7 @@ export class SharePageComponent implements OnInit, OnDestroy {
           });
           this.view.maxAttemptAC = problemAnalyze
             .filter((o) => o.ac)
-            .sort((a, b) => b.attempt - b.attempt)
+            .sort((a, b) => b.attempt - a.attempt)
             .slice(0, 3);
           this.view.fastAC = problemAnalyze
             .filter((o) => o.actime != -1)
@@ -217,11 +262,13 @@ export class SharePageComponent implements OnInit, OnDestroy {
             .slice(0, 3);
 
           this.view.hardestAC = problemAnalyze
-            .filter((o) => o.rating != 0)
+            .filter((o) => o.ac && o.rating != 0)
             .sort((a, b) => b.rating - a.rating)
             .slice(0, 3);
 
-          this.view.unsolved = problemAnalyze.filter((o) => !o.ac);
+          this.view.unsolved = problemAnalyze
+            .filter((o) => !o.ac)
+            .sort((a, b) => b.attempt - a.attempt);
 
           this.view.verdict = analyzeVerdict(l);
           this.view.acTags = analyzeAcTags(l);
