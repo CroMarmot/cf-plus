@@ -84,6 +84,8 @@ export class SharePageComponent implements OnInit, OnDestroy {
 
   view = {
     ratingChange: 0,
+    oldRating: 0,
+    newRating: 0,
     contestCount: 0,
     submissionCount: 0,
     ACCount: 0,
@@ -132,11 +134,13 @@ export class SharePageComponent implements OnInit, OnDestroy {
           this.queryForm.patchValue({ participantType: participantType || '' })
         ),
         tap((r) => {
-          query$.next({
-            handle: r['handle'],
-            year: r['year'], // 2000 - current
-            participantType: r['participantType'],
-          });
+          if (r['handle']) {
+            query$.next({
+              handle: r['handle'],
+              year: r['year'], // 2000 - current
+              participantType: r['participantType'],
+            });
+          }
         })
       )
       .subscribe();
@@ -209,7 +213,14 @@ export class SharePageComponent implements OnInit, OnDestroy {
       .pipe(
         tap(console.log),
         tap((l: CfUserRatingItem[]) => {
-          this.view.ratingChange = ratingChange(l);
+          if (l.length) {
+            this.view.oldRating = l[0].oldRating;
+            this.view.newRating = l[l.length - 1].newRating;
+          } else {
+            this.view.oldRating = 0;
+            this.view.newRating = 0;
+          }
+          this.view.ratingChange = this.view.newRating - this.view.oldRating;
           this.view.rankHigh = [...l]
             .sort((a, b) => a.rank - b.rank)
             .slice(0, 3); // don't change originial array

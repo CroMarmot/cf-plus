@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Date2GR, YearData } from 'src/app/model/models';
 import { Submission } from 'src/app/model/api/Submission';
 import { intDiv, nextDayNumber, timestamp2number } from 'src/app/utils/utils';
@@ -23,12 +23,12 @@ export class YearStatComponent implements OnInit {
   ngOnInit(): void {
     this.userData$
       .pipe(
-        tap((data: Submission[]) => {
+        map((data: Submission[]) => {
           // console.log(`years result called len = ${data.length}`);
           // collect as map
           const d2ggMap: Map<number, Date2GR> = new Map(null);
           if (data.length === 0) {
-            return [];
+            return [] as YearData[];
           }
           const todayDate = timestamp2number(new Date().getTime()); // TODO
           let minDate = todayDate;
@@ -66,8 +66,9 @@ export class YearStatComponent implements OnInit {
           if (yd.weekList.length !== 0) {
             ret.push(yd);
           }
-          this.yearsResult = ret;
-        })
+          return ret;
+        }),
+        tap((r) => (this.yearsResult = r))
       )
       .subscribe();
   }

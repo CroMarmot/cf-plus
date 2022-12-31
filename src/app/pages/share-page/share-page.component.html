@@ -32,18 +32,32 @@
     </form>
 
     <!-- TODO filter -->
-    <div>user.rating fetch status: {{ fetchStatString[ratingFetching] }}</div>
-    <div>user.status fetch status: {{ fetchStatString[statusFetching] }}</div>
+    <div *ngIf="ratingFetching !== FetchStat.Before">
+      user.rating fetch status: {{ fetchStatString[ratingFetching] }}
+    </div>
+    <div *ngIf="statusFetching !== FetchStat.Before">
+      user.status fetch status: {{ fetchStatString[statusFetching] }}
+    </div>
 
     <app-year-stat
       [userStatusResult]="userStatusFiltered$ | async"
     ></app-year-stat>
 
-    <table>
+    <table
+      *ngIf="
+        (userStatusFiltered$ | async)?.length ||
+        (userRatingFiltered$ | async)?.length
+      "
+    >
       <tbody>
         <tr>
           <th>Rating change</th>
-          <td>{{ view.ratingChange }}</td>
+          <td>
+            {{ view.ratingChange
+            }}<span *ngIf="(userRatingFiltered$ | async)?.length"
+              >({{ view.oldRating }} -> {{ view.newRating }})</span
+            >
+          </td>
         </tr>
         <tr>
           <th>Contest count</th>
@@ -147,84 +161,86 @@
       >
       </app-contest-report-card>
     </ng-container>
-    <table>
-      <caption>
-        <h2>Verdict</h2>
-      </caption>
-      <tbody>
-        <tr>
-          <th>verdict</th>
-          <th>count</th>
-        </tr>
-        <tr *ngFor="let o of view.verdict">
-          <td>{{ o.name }}</td>
-          <td>{{ o.count }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <table>
-      <caption>
-        <h2>Tag(First AC)</h2>
-      </caption>
-      <tbody>
-        <tr>
-          <th>tag</th>
-          <th>count</th>
-        </tr>
-        <tr *ngFor="let o of view.acTags">
-          <td>{{ o.name }}</td>
-          <td>{{ o.count }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <table>
-      <caption>
-        <h2>Language(First AC)</h2>
-      </caption>
-      <tbody>
-        <tr>
-          <th>language</th>
-          <th>count</th>
-        </tr>
-        <tr *ngFor="let o of view.firstAcLanguage">
-          <td>{{ o.name }}</td>
-          <td>{{ o.count }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <table>
-      <caption>
-        <h2>Problem Rating(First AC)</h2>
-      </caption>
-      <tbody>
-        <tr>
-          <th>rating</th>
-          <th>count</th>
-        </tr>
-        <tr *ngFor="let o of view.acRating">
-          <td>{{ o.name }}</td>
-          <td>{{ o.count }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <table>
-      <caption>
-        <h2>Problem Index(First AC)</h2>
-      </caption>
-      <tbody>
-        <tr>
-          <th>index</th>
-          <th>count</th>
-        </tr>
-        <tr *ngFor="let o of view.acIndex">
-          <td>{{ o.name }}</td>
-          <td>{{ o.count }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <ng-container *ngIf="(userStatusFiltered$ | async)?.length">
+      <table>
+        <caption>
+          <h2>Verdict</h2>
+        </caption>
+        <tbody>
+          <tr>
+            <th>verdict</th>
+            <th>count</th>
+          </tr>
+          <tr *ngFor="let o of view.verdict">
+            <td>{{ o.name }}</td>
+            <td>{{ o.count }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <caption>
+          <h2>Tag(First AC)</h2>
+        </caption>
+        <tbody>
+          <tr>
+            <th>tag</th>
+            <th>count</th>
+          </tr>
+          <tr *ngFor="let o of view.acTags">
+            <td>{{ o.name }}</td>
+            <td>{{ o.count }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <caption>
+          <h2>Language(First AC)</h2>
+        </caption>
+        <tbody>
+          <tr>
+            <th>language</th>
+            <th>count</th>
+          </tr>
+          <tr *ngFor="let o of view.firstAcLanguage">
+            <td>{{ o.name }}</td>
+            <td>{{ o.count }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <caption>
+          <h2>Problem Rating(First AC)</h2>
+        </caption>
+        <tbody>
+          <tr>
+            <th>rating</th>
+            <th>count</th>
+          </tr>
+          <tr *ngFor="let o of view.acRating">
+            <td>{{ o.name }}</td>
+            <td>{{ o.count }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <caption>
+          <h2>Problem Index(First AC)</h2>
+        </caption>
+        <tbody>
+          <tr>
+            <th>index</th>
+            <th>count</th>
+          </tr>
+          <tr *ngFor="let o of view.acIndex">
+            <td>{{ o.name }}</td>
+            <td>{{ o.count }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
     <!--<h2>failed system test</h2>-->
     <!--<h2>hack lose ac</h2>-->
-    <div class="modern">
+    <div class="modern" *ngIf="(userStatusFiltered$ | async)?.length">
       <button
         mat-flat-button
         routerLink="/annual"
