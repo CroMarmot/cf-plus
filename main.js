@@ -314,6 +314,7 @@ __webpack_require__.r(__webpack_exports__);
 
 // import 'echarts/theme/macarons.js';
 // https://github.com/xieziyu/ngx-echarts#treeshaking-custom-build
+// https://echarts.apache.org/en/cheat-sheet.html
 echarts_core__WEBPACK_IMPORTED_MODULE_18__.use([echarts_components__WEBPACK_IMPORTED_MODULE_19__.install, echarts_components__WEBPACK_IMPORTED_MODULE_20__.install, echarts_components__WEBPACK_IMPORTED_MODULE_21__.install, echarts_components__WEBPACK_IMPORTED_MODULE_22__.install, echarts_charts__WEBPACK_IMPORTED_MODULE_23__.install, echarts_charts__WEBPACK_IMPORTED_MODULE_24__.install, echarts_charts__WEBPACK_IMPORTED_MODULE_25__.install, echarts_renderers__WEBPACK_IMPORTED_MODULE_26__.install]);
 class AppModule {}
 AppModule.ɵfac = function AppModule_Factory(t) {
